@@ -11,6 +11,7 @@ import java.util.ArrayList;
  * @author Embrono
  */
 public class Etiqueta {
+    private  TipoEtiqueta tipo;
     private ArrayList<Multa> multas;
     private ArrayList<Vehiculo> vehiculos;
     private ArrayList<Cochera> cochera;
@@ -39,4 +40,8 @@ public class Etiqueta {
         this.cochera = cochera;
     }
     
+    private enum TipoEtiqueta{
+        Descapacitado,
+        Electrico,
+    }
 }

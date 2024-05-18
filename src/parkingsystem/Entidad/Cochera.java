@@ -12,6 +12,11 @@ import simuladortransito.Estacionable;
  * @author Embrono
  */
 public class Cochera implements Estacionable {
+
+    public Cochera(Parking parking) {
+        this.parking = parking;
+        id = ++ultimoId;
+    }
     private int id; 
     private static int ultimoId = 0;
     private Parking parking; 
@@ -41,7 +46,6 @@ public class Cochera implements Estacionable {
     public void setEtiquetas(ArrayList<Etiqueta> etiquetas) {
         this.etiquetas = etiquetas;
     }
-
     @Override
     public String getCodigo() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

@@ -5,12 +5,20 @@
 package parkingsystem.Entidad;
 
 import java.util.ArrayList;
+import simuladortransito.Estacionable;
+import simuladortransito.Sensor;
+import simuladortransito.Transitable;
 
 /**
  *
  * @author Embrono
  */
-public class Parking {
+public class Parking implements Sensor{
+
+    public Parking(String nombre, String direccion) {
+        this.nombre = nombre;
+        this.direccion = direccion;
+    }
     private String nombre;
     private String direccion;
     private ArrayList<Cochera> Cocheras;
@@ -30,5 +38,15 @@ public class Parking {
 
     public void setTarifas(ArrayList<Tarifa> Tarifas) {
         this.Tarifas = Tarifas;
+    }
+
+    @Override
+    public void ingreso(Transitable transitable, Estacionable estacionable) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void egreso(Transitable transitable, Estacionable estacionable) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
