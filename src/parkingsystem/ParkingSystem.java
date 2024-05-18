@@ -4,17 +4,57 @@
  */
 package parkingsystem;
 
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import parkingsystem.Entidad.Cochera;
+import parkingsystem.Entidad.Vehiculo;
+import simuladortransito.ConfiguracionException;
+import simuladortransito.Estacionable;
+import simuladortransito.FlujoIngreso;
+import simuladortransito.Periodo;
+import simuladortransito.Sensor;
+import simuladortransito.SimuladorTransito;
+import simuladortransito.Transitable;
+
 /**
  *
  * @author Embrono
  */
 public class ParkingSystem {
 
+    private static SimuladorTransito simulador;
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        ArrayList<Transitable> vehiculos = new ArrayList<Transitable>();
+        ArrayList<Estacionable> cocheras = new ArrayList<Estacionable>();
+        simulador = SimuladorTransito.getInstancia();
+        simulador.addTransitables(vehiculos);
+        simulador.addEstacionables(cocheras);
+        var flujoingreso = new FlujoIngreso("Ingreso Inicial", new Periodo(0, 5),3);
+        try {
+            simulador.programar(flujoingreso);
+            simulador.iniciar(new Sensor(){
+                @Override
+                public void ingreso(Transitable transitable, Estacionable estacionable) {
+                    Vehiculo v = (Vehiculo)transitable;
+                    Cochera c = (Cochera) estacionable;
+                }
+
+                @Override
+                public void egreso(Transitable transitable, Estacionable estacionable) {
+                    Vehiculo v = (Vehiculo)transitable;
+                    Cochera c = (Cochera) estacionable;
+                }
+            });
+        } catch (ConfiguracionException ex) {
+            Logger.getLogger(ParkingSystem.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
     }
     
 }

@@ -5,13 +5,14 @@
 package parkingsystem.Entidad;
 
 import java.util.ArrayList;
+import simuladortransito.Transitable;
 
 /**
  *
  * @author Embrono
  */
-public class Vehiculo {
-    private int patente;
+public class Vehiculo implements Transitable  {
+    private String patente;
     private ArrayList<Estadia> estadias;
     private ArrayList<Etiqueta> etiquetas;
     private Propietario propietario;
@@ -47,6 +48,26 @@ public class Vehiculo {
 
     public void setTipo(TipoVehiculo tipo) {
         this.tipo = tipo;
+    }
+
+    @Override
+    public String getPatente() {
+        return this.patente;
+    }
+
+    @Override
+    public boolean esDiscapacitado() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean esElectrico() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean esEmpleado() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }
