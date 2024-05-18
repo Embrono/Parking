@@ -4,6 +4,7 @@
  */
 package parkingsystem;
 
+import UI.PanelInicial;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,8 +54,7 @@ public class ParkingSystem {
         } catch (ConfiguracionException ex) {
             Logger.getLogger(ParkingSystem.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+        new PanelInicial().setVisible(true);
     }
     
 }
