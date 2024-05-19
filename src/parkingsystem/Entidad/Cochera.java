@@ -16,12 +16,27 @@ public class Cochera implements Estacionable {
     public Cochera(Parking parking) {
         this.parking = parking;
         id = ++ultimoId;
+        estadias = new ArrayList<>();
+        etiquetas = new ArrayList<>();
     }
-    private int id; 
+    private final int id; 
     private static int ultimoId = 0;
     private Parking parking; 
     private ArrayList<Estadia> estadias;
     private ArrayList<Etiqueta> etiquetas;
+    private boolean ocupada;
+
+    public boolean isOcupada() {
+        return ocupada;
+    }
+
+    public void setOcupada(boolean ocupada) {
+        this.ocupada = ocupada;
+    }
+    
+    public int getId() {
+        return id;
+    }
     
     public Parking getParking() {
         return parking;
@@ -48,7 +63,7 @@ public class Cochera implements Estacionable {
     }
     @Override
     public String getCodigo() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return id + "";
     }
 
     @Override

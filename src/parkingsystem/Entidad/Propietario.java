@@ -11,6 +11,12 @@ import java.util.ArrayList;
  * @author Embrono
  */
 public class Propietario {
+
+    public Propietario(String documento, String nombreCompleto) {
+        this.documento = documento;
+        this.nombreCompleto = nombreCompleto;
+        this.vehiculos = new ArrayList<>();
+    }
     private String documento;
     private String nombreCompleto;
     private ArrayList<Vehiculo> vehiculos;

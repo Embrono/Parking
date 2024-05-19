@@ -18,6 +18,9 @@ public class Parking implements Sensor{
     public Parking(String nombre, String direccion) {
         this.nombre = nombre;
         this.direccion = direccion;
+        Tarifas = new ArrayList<>();
+        Cocheras = new ArrayList<>();
+
     }
     private String nombre;
     private String direccion;
