@@ -6,10 +6,16 @@ package Precarga;
 
 import java.util.ArrayList;
 import java.util.Random;
+import parkingsystem.Entidad.Carga;
 import parkingsystem.Entidad.Cochera;
 import parkingsystem.Entidad.Etiqueta;
+import parkingsystem.Entidad.Motocicleta;
+import parkingsystem.Entidad.Pago;
 import parkingsystem.Entidad.Parking;
+import parkingsystem.Entidad.Pasajeros;
 import parkingsystem.Entidad.Propietario;
+import parkingsystem.Entidad.Standard;
+import parkingsystem.Entidad.Tarifa;
 import parkingsystem.Entidad.TipoVehiculo;
 import parkingsystem.Entidad.Vehiculo;
 
@@ -21,18 +27,18 @@ public class PreCarga {
    // private Parking p1 = new Parking("Parking Inicial","Salto y Constituyente"); 
    // private Parking p2 = new Parking("Parking Premium","Carrasco frente a la rambla"); 
     
-    
-    
     public Parking generarParking(String nombre, String direccion){
-        return new Parking(nombre, direccion);
+        var aux = new Parking(nombre, direccion);
+        aux.setCocheras(generarChocherasPrecarga(aux));
+        aux.setTarifas(generarTarigasPrecarga(aux));
+        return aux;  
     }
     
     
     public ArrayList<Cochera> generarChocherasPrecarga(Parking p){
         var cocheras = new ArrayList<Cochera>();
         var cantidad = new Random();
-        int aux = cantidad.nextInt(50);
-        aux += 50;
+        int aux = cantidad.nextInt(50,101);
         for(int i = 0; i < aux; i++){
             var cochera = new Cochera(p);
             cochera.setEtiquetas(generarEtiquetas());
@@ -43,13 +49,12 @@ public class PreCarga {
         return cocheras;
     }
     
-    public ArrayList<Vehiculo> generarVehiculoPrecarga(Parking p){
+    private ArrayList<Vehiculo> generarVehiculoPrecarga(){
         var cocheras = new ArrayList<Vehiculo>();
         var cantidad = new Random();
-        int aux = cantidad.nextInt(50);
-        aux += 50;
+        int aux = cantidad.nextInt(50,101);
         for(int i = 0; i < aux; i++){
-            var ve = new Vehiculo();
+            Vehiculo ve = generarVehiculo();
             ve.setEtiquetas(generarEtiquetas());
             ve.setTipo(generarTipoVehiculo());
         }
@@ -65,8 +70,54 @@ public class PreCarga {
         return new TipoVehiculo();
     }
     
-    public Propietario gernerPropietario(String nombre,String documento){
-        return new Propietario(nombre,documento);
+    public ArrayList<Propietario> generarPropietarios(){
+        Random rnd = new Random();
+        ArrayList<Propietario> propietarios = new ArrayList<>();
+        for (int i = 1; i <= 50; i++) {
+            String documento = "DOC" + i;
+            String nombreCompleto = "Nombre Completo " + i;
+            Propietario propietario = new Propietario(documento, nombreCompleto);
+            propietario.agregarPago(new Pago(rnd.nextFloat(10, 101),propietario));
+            propietario.setVehiculos(generarVehiculoPrecarga());
+            propietarios.add(propietario);
+            
+        }
+        return propietarios;
+    }
+
+    private ArrayList<Tarifa> generarTarigasPrecarga(Parking p) {
+        var tarifas = new ArrayList<Tarifa>();
+        Tarifa t1 = new Tarifa(p);
+        Tarifa t2 = new Tarifa(p);
+        Tarifa t3 = new Tarifa(p);
+        Tarifa t4 = new Tarifa(p);
+        tarifas.add(t4);       
+        tarifas.add(t3);
+        tarifas.add(t2);
+        tarifas.add(t1);
+        t4.setPrecio(0.1); 
+        t4.setVehiculo(new Carga());
+        t3.setPrecio(0.1);
+        t3.setVehiculo(new Standard());
+        t2.setPrecio(0.1);
+        t2.setVehiculo(new Pasajeros());
+        t1.setPrecio(0.05);
+        t1.setVehiculo(new Motocicleta());
+
+        return tarifas;
+    }
+
+    private Vehiculo generarVehiculo() {
+        int num = new Random().nextInt();
+         if(num % 7 == 0 ){
+             return new Carga();
+         }else if(num % 5 == 0){
+            return new Pasajeros();
+         }else if(num % 3 == 0){
+            return new Motocicleta();
+         }else{
+            return new Standard();
+         }
     }
 }
 

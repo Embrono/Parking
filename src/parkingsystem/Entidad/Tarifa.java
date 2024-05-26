@@ -9,17 +9,37 @@ package parkingsystem.Entidad;
  * @author Embrono
  */
 public class Tarifa {
+
+    public Tarifa(Parking p) {
+        parking = p;
+    }
    private int tiempo = 1;
-   private float precio;
-   private Vehiculo vehiculo;
+   private double precio;
+
+    public double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
+
+    public Vehiculo getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Vehiculo tipo) {
+        this.tipo = tipo;
+    }
+   private Vehiculo tipo;
    private Parking parking; 
 
     public Vehiculo getVehiculo() {
-        return vehiculo;
+        return tipo;
     }
 
     public void setVehiculo(Vehiculo vehiculo) {
-        this.vehiculo = vehiculo;
+        this.tipo = vehiculo;
     }
 
     public Parking getParking() {

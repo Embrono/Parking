@@ -20,12 +20,27 @@ public class Propietario {
     private String documento;
     private String nombreCompleto;
     private ArrayList<Vehiculo> vehiculos;
-    //private ArrayList<Pagos> cuentaCorriente; #TODO
+    private ArrayList<Pago> cuentaCorriente;
+
+    public String getDocumento() {
+        return documento;
+    }
+
+    public String getNombreCompleto() {
+        return nombreCompleto;
+    }
+
+    public ArrayList<Pago> getCuentaCorriente() {
+        return cuentaCorriente;
+    }
     public ArrayList<Vehiculo> getVehiculos() {
         return vehiculos;
     }
 
     public void setVehiculos(ArrayList<Vehiculo> vehiculos) {
         this.vehiculos = vehiculos;
+    }
+    public void agregarPago(Pago pago){
+        cuentaCorriente.add(pago);
     }
 }

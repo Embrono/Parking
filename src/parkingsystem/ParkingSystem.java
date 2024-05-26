@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import parkingsystem.Entidad.Cochera;
+import parkingsystem.Entidad.Dectector;
 import parkingsystem.Entidad.Vehiculo;
 import simuladortransito.ConfiguracionException;
 import simuladortransito.Estacionable;
@@ -38,19 +39,7 @@ public class ParkingSystem {
         var flujoingreso = new FlujoIngreso("Ingreso Inicial", new Periodo(0, 5),3);
         try {
             simulador.programar(flujoingreso);
-            simulador.iniciar(new Sensor(){
-                @Override
-                public void ingreso(Transitable transitable, Estacionable estacionable) {
-                    Vehiculo v = (Vehiculo)transitable;
-                    Cochera c = (Cochera) estacionable;
-                }
-
-                @Override
-                public void egreso(Transitable transitable, Estacionable estacionable) {
-                    Vehiculo v = (Vehiculo)transitable;
-                    Cochera c = (Cochera) estacionable;
-                }
-            });
+            simulador.iniciar(new Dectector());
         } catch (ConfiguracionException ex) {
             Logger.getLogger(ParkingSystem.class.getName()).log(Level.SEVERE, null, ex);
         }

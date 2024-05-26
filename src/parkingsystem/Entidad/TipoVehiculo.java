@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * @author Embrono
  */
 public class TipoVehiculo {
-    private ITipoVehiculo tipo;
+    private Vehiculo tipo;
     private ArrayList<Vehiculo> vehiculos;
     private ArrayList<Tarifa> tarifas;
 
@@ -31,11 +31,11 @@ public class TipoVehiculo {
         this.tarifas = tarifas;
     }
 
-    public ITipoVehiculo getTipo() {
+    public Vehiculo getTipo() {
         return tipo;
     }
 
-    public void setTipo(ITipoVehiculo tipo) {
+    public void setTipo(Vehiculo tipo) {
         this.tipo = tipo;
     }
 }

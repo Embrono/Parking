@@ -11,13 +11,13 @@ import simuladortransito.Transitable;
  *
  * @author Embrono
  */
-public class Vehiculo implements Transitable  {
+public abstract class Vehiculo implements Transitable  {
     private String patente;
     private ArrayList<Estadia> estadias;
     private ArrayList<Etiqueta> etiquetas;
     private Propietario propietario;
     private TipoVehiculo tipo;
-    
+    private boolean estacionado;
     public ArrayList<Estadia> getEstadias() {
         return estadias;
     }
@@ -68,6 +68,14 @@ public class Vehiculo implements Transitable  {
     @Override
     public boolean esEmpleado() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public boolean isEstacionado() {
+        return estacionado;
+    }
+
+    public void setEstacionado(boolean estacionado) {
+        this.estacionado = estacionado;
     }
 
 }

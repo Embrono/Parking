@@ -8,8 +8,7 @@ package parkingsystem.Entidad;
  *
  * @author Embrono
  */
-public class Motocicleta extends Vehiculo  {
+public class Carga extends Vehiculo {
 
-    
     
 }
