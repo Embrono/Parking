@@ -64,6 +64,9 @@ public class Cochera implements Estacionable {
     }
 
     public void setEtiquetas(ArrayList<Etiqueta> etiquetas) {
+         for(var e : etiquetas){
+            e.getCochera().add(this);
+        }
         this.etiquetas = etiquetas;
     }
     @Override

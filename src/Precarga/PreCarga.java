@@ -5,9 +5,14 @@
 package Precarga;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Random;
 import parkingsystem.Entidad.Carga;
 import parkingsystem.Entidad.Cochera;
+import parkingsystem.Entidad.Discapacitado;
+import parkingsystem.Entidad.Electrico;
+import parkingsystem.Entidad.Empleado;
 import parkingsystem.Entidad.Etiqueta;
 import parkingsystem.Entidad.Motocicleta;
 import parkingsystem.Entidad.Pago;
@@ -24,6 +29,11 @@ import parkingsystem.Entidad.Vehiculo;
  * @author Embrono
  */
 public class PreCarga {
+     public static ArrayList<Etiqueta> etiquetas = new ArrayList<>(Arrays.asList(
+        new Discapacitado(),
+        new Empleado(),
+        new Electrico()
+    ));
     public Parking generarParking(String nombre, String direccion){
         var aux = new Parking(nombre, direccion);
         aux.setCocheras(generarChocherasPrecarga(aux));
@@ -62,7 +72,12 @@ public class PreCarga {
     }
 
     public ArrayList<Etiqueta> generarEtiquetas() {
-        return new ArrayList<>();
+        Random random = new Random();
+        Collections.shuffle(etiquetas, random);
+        int cantidad = random.nextInt(etiquetas.size() + 1); // 0 to etiquetas.size()
+        ArrayList<Etiqueta> etiquetasSeleccionadas = new ArrayList<>(etiquetas.subList(0, cantidad));
+
+        return etiquetasSeleccionadas;
     }
 
     public TipoVehiculo generarTipoVehiculo() {

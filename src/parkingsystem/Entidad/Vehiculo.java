@@ -38,6 +38,9 @@ public abstract class Vehiculo implements Transitable  {
     }
 
     public void setEtiquetas(ArrayList<Etiqueta> etiquetas) {
+        for(var e : etiquetas){
+            e.getVehiculos().add(this);
+        }
         this.etiquetas = etiquetas;
     }
 
