@@ -19,6 +19,7 @@ public class Dectector implements Sensor {
             Cochera c = (Cochera) estacionable;
             v.setEstacionado(true);
             c.setOcupada(true);
+            
         }
 
         @Override

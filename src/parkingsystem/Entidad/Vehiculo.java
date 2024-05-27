@@ -18,8 +18,15 @@ public abstract class Vehiculo implements Transitable  {
     private Propietario propietario;
     private TipoVehiculo tipo;
     private boolean estacionado;
+    private static int id = 0;
+    
     public ArrayList<Estadia> getEstadias() {
         return estadias;
+    }
+
+    public Vehiculo() {
+        this.patente = id + "";
+        id++;
     }
 
     public void setEstadias(ArrayList<Estadia> estadias) {
@@ -77,5 +84,12 @@ public abstract class Vehiculo implements Transitable  {
     public void setEstacionado(boolean estacionado) {
         this.estacionado = estacionado;
     }
+
+    @Override
+    public String toString() {
+        return "Vehiculo{" + "patente=" + patente + ", propietario=" + propietario.getNombreCompleto() + '}';
+    }
+    
+    
 
 }

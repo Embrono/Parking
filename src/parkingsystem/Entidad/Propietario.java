@@ -15,7 +15,8 @@ public class Propietario {
     public Propietario(String documento, String nombreCompleto) {
         this.documento = documento;
         this.nombreCompleto = nombreCompleto;
-        this.vehiculos = new ArrayList<>();
+        this.vehiculos = new ArrayList<>(); 
+        this.cuentaCorriente = new ArrayList<>();
     }
     private String documento;
     private String nombreCompleto;

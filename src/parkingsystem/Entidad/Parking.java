@@ -22,6 +22,11 @@ public class Parking implements Sensor{
         Cocheras = new ArrayList<>();
 
     }
+
+    @Override
+    public String toString() {
+        return "Parking{" + "nombre=" + nombre + '}';
+    }
     private String nombre;
     private String direccion;
     private ArrayList<Cochera> Cocheras;

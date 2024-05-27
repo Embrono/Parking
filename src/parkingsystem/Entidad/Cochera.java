@@ -20,6 +20,11 @@ public class Cochera implements Estacionable {
         etiquetas = new ArrayList<>();
     }
     private final int id; 
+
+    @Override
+    public String toString() {
+        return "Cochera{" + "id=" + id + ", parking=" + parking.toString() + '}';
+    }
     private static int ultimoId = 0;
     private Parking parking; 
     private ArrayList<Estadia> estadias;

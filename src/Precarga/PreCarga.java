@@ -24,9 +24,6 @@ import parkingsystem.Entidad.Vehiculo;
  * @author Embrono
  */
 public class PreCarga {
-   // private Parking p1 = new Parking("Parking Inicial","Salto y Constituyente"); 
-   // private Parking p2 = new Parking("Parking Premium","Carrasco frente a la rambla"); 
-    
     public Parking generarParking(String nombre, String direccion){
         var aux = new Parking(nombre, direccion);
         aux.setCocheras(generarChocherasPrecarga(aux));
@@ -49,7 +46,7 @@ public class PreCarga {
         return cocheras;
     }
     
-    private ArrayList<Vehiculo> generarVehiculoPrecarga(){
+    private ArrayList<Vehiculo> generarVehiculoPrecarga(Propietario propietario){
         var cocheras = new ArrayList<Vehiculo>();
         var cantidad = new Random();
         int aux = cantidad.nextInt(50,101);
@@ -57,6 +54,8 @@ public class PreCarga {
             Vehiculo ve = generarVehiculo();
             ve.setEtiquetas(generarEtiquetas());
             ve.setTipo(generarTipoVehiculo());
+            ve.setPropietario(propietario);
+            cocheras.add(ve);
         }
         
         return cocheras;
@@ -73,12 +72,18 @@ public class PreCarga {
     public ArrayList<Propietario> generarPropietarios(){
         Random rnd = new Random();
         ArrayList<Propietario> propietarios = new ArrayList<>();
+        ArrayList<String> nombres = new ArrayList<>();
+        nombres.add("Andres");
+        nombres.add("Manuela");
+        nombres.add("Facundo");
+
         for (int i = 1; i <= 50; i++) {
             String documento = "DOC" + i;
-            String nombreCompleto = "Nombre Completo " + i;
+            String nombreCompleto =  nombres.get(i%nombres.size());
             Propietario propietario = new Propietario(documento, nombreCompleto);
             propietario.agregarPago(new Pago(rnd.nextFloat(10, 101),propietario));
-            propietario.setVehiculos(generarVehiculoPrecarga());
+            var aux = generarVehiculoPrecarga(propietario);
+            propietario.setVehiculos(aux);
             propietarios.add(propietario);
             
         }

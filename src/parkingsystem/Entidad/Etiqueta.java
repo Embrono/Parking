@@ -10,26 +10,19 @@ import java.util.ArrayList;
  *
  * @author Embrono
  */
-public class Etiqueta {
+public abstract class Etiqueta {
 
-    public Etiqueta(TipoEtiqueta tipo) {
-        this.tipo = tipo;
+    public Etiqueta() {
+        multas = new ArrayList<>();
+        vehiculos = new ArrayList<>();
+        cocheras = new ArrayList<>();
+
     }
-    private  TipoEtiqueta tipo;
 
     private ArrayList<Multa> multas;
     private ArrayList<Vehiculo> vehiculos;
-    private ArrayList<Cochera> cochera;
+    private ArrayList<Cochera> cocheras;
 
-    
-    public TipoEtiqueta getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(TipoEtiqueta tipo) {
-        this.tipo = tipo;
-    }
-    
     public ArrayList<Multa> getMultas() {
         return multas;
     }
@@ -47,11 +40,11 @@ public class Etiqueta {
     }
 
     public ArrayList<Cochera> getCochera() {
-        return cochera;
+        return cocheras;
     }
 
     public void setCochera(ArrayList<Cochera> cochera) {
-        this.cochera = cochera;
+        this.cocheras = cochera;
     }
     
     private enum TipoEtiqueta{
