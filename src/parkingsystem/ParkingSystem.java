@@ -40,10 +40,13 @@ public class ParkingSystem {
         Parking p2 = pre.generarParking("Facuando", "Salto y contituyente");
         ArrayList<Propietario> prop = pre.generarPropietarios();
         ArrayList<Transitable> vehiculos = new ArrayList<>();
-
+        SistemaParking sistema = SistemaParking.getInstancia();
+        
         for(var p :  prop){
             vehiculos.addAll(p.getVehiculos());
+            sistema.getVehiculos().addAll(p.getVehiculos());
         }
+        
         ArrayList<Estacionable> cocheras = new ArrayList<>(p1.getCocheras());
         cocheras.addAll(p2.getCocheras());
         simulador = SimuladorTransito.getInstancia();
@@ -58,6 +61,15 @@ public class ParkingSystem {
         }
         new PanelInicial().setVisible(true);
         new SimuladorIU(null, false,new Dectector(),cocheras,vehiculos).setVisible(true);
+        sistema.getCochera().addAll(p1.getCocheras());
+        sistema.getCochera().addAll(p2.getCocheras());
+        sistema.getParkings().add(p1);
+        sistema.getParkings().add(p2);
+        sistema.getPropietarios().addAll(prop);
+        sistema.getEtiquetas().addAll(pre.etiquetas);
+        
+
+        
         
     }
     
