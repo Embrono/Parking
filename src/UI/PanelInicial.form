@@ -13,6 +13,10 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value=" Tablero de control"/>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jMenuItemTableroMouseClicked"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemTableroActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>

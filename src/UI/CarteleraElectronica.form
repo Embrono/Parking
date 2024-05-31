@@ -162,6 +162,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Cerrar"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButtonCerrarMouseClicked"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

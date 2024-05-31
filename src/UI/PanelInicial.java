@@ -35,6 +35,16 @@ public class PanelInicial extends javax.swing.JFrame {
         jMenuPrincipal.setText("Menu");
 
         jMenuItemTablero.setText(" Tablero de control");
+        jMenuItemTablero.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenuItemTableroMouseClicked(evt);
+            }
+        });
+        jMenuItemTablero.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemTableroActionPerformed(evt);
+            }
+        });
         jMenuPrincipal.add(jMenuItemTablero);
 
         jMenuBar1.add(jMenuPrincipal);
@@ -54,6 +64,15 @@ public class PanelInicial extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jMenuItemTableroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemTableroMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItemTableroMouseClicked
+
+    private void jMenuItemTableroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemTableroActionPerformed
+        // TODO add your handling code here:
+        new TableroDeControl().setVisible(true);
+    }//GEN-LAST:event_jMenuItemTableroActionPerformed
 
     /**
      * @param args the command line arguments
