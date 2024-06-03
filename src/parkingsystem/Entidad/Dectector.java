@@ -4,6 +4,7 @@
  */
 package parkingsystem.Entidad;
 
+import observador.Observable;
 import simuladortransito.Estacionable;
 import simuladortransito.Sensor;
 import simuladortransito.Transitable;
@@ -12,7 +13,7 @@ import simuladortransito.Transitable;
  *
  * @author Embrono
  */
-public class Dectector implements Sensor {
+public class Dectector extends Observable implements Sensor {
         @Override
         public void ingreso(Transitable transitable, Estacionable estacionable) {
             Vehiculo v = (Vehiculo)transitable;
@@ -28,5 +29,6 @@ public class Dectector implements Sensor {
             Cochera c = (Cochera) estacionable;
             v.setEstacionado(false);
             c.setOcupada(false);
+            avisar(null);
         }   
 }
