@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import parkingsystem.Entidad.Cochera;
+import parkingsystem.Entidad.Etiqueta;
 import parkingsystem.Entidad.Parking;
 import parkingsystem.Entidad.Propietario;
 import parkingsystem.Entidad.Vehiculo;
-import parkingsystem.controladores.ControladorEstacionamiento;
 import simuladorIU.SimuladorIU;
 import simuladortransito.ConfiguracionException;
 import simuladortransito.Estacionable;
@@ -30,7 +30,6 @@ import simuladortransito.Transitable;
 public class ParkingSystem {
 
     private static SimuladorTransito simulador;
-    private static ControladorEstacionamiento controladorEstacionamiento;
     /**
      * @param args the command line arguments
      */
@@ -79,8 +78,6 @@ public class ParkingSystem {
         sistema.getParkings().add(p1);
         sistema.getParkings().add(p2);
         sistema.getPropietarios().addAll(prop);
-        sistema.getEtiquetas().addAll(pre.etiquetas);
-                   
     }
     
 }

@@ -29,7 +29,6 @@ public class SistemaParking {
         cochera = new ArrayList<>();
         parkings = new ArrayList<>();
         propietarios = new ArrayList<>();
-        etiquetas = new ArrayList<>();
     }
     // Public method to provide access to the singleton instance
     public static SistemaParking getInstancia() {
@@ -43,7 +42,6 @@ public class SistemaParking {
     private ArrayList<Cochera> cochera;
     private ArrayList<Parking> parkings;
     private ArrayList<Propietario> propietarios;
-    private ArrayList<Etiqueta> etiquetas;
 
     public ArrayList<Vehiculo> getVehiculos() {
         return vehiculos;
@@ -75,13 +73,5 @@ public class SistemaParking {
 
     public void setPropietarios(ArrayList<Propietario> propietarios) {
         this.propietarios = propietarios;
-    }
-
-    public ArrayList<Etiqueta> getEtiquetas() {
-        return etiquetas;
-    }
-
-    public void setEtiquetas(ArrayList<Etiqueta> etiquetas) {
-        this.etiquetas = etiquetas;
     }
 }

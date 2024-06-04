@@ -6,6 +6,7 @@ package parkingsystem.Entidad;
 
 import java.util.ArrayList;
 import java.util.Date;
+import parkingsystem.Fachada;
 import simuladortransito.Estacionable;
 
 /**
@@ -93,16 +94,17 @@ public class Cochera implements Estacionable {
 
     @Override
     public boolean esDiscapacitado() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return Fachada.getInstancia().esDiscapacitado(etiquetas);
     }
 
     @Override
     public boolean esElectrico() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+      return Fachada.getInstancia().esElectrico(etiquetas);
     }
 
     @Override
     public boolean esEmpleado() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return Fachada.getInstancia().esEmpleado(etiquetas);
     }
+
 }

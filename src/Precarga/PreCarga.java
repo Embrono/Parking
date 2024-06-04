@@ -23,16 +23,15 @@ import parkingsystem.Entidad.Standard;
 import parkingsystem.Entidad.Tarifa;
 import parkingsystem.Entidad.TipoVehiculo;
 import parkingsystem.Entidad.Vehiculo;
+import parkingsystem.SistemaEtiquetas;
 
 /**
  *
  * @author Embrono
  */
 public class PreCarga {
-     public static ArrayList<Etiqueta> etiquetas = new ArrayList<>(Arrays.asList(
-        new Discapacitado(),
-        new Empleado(),
-        new Electrico()
+    public static ArrayList<Etiqueta> etiquetas = new ArrayList<>(Arrays.asList(
+        
     ));
     public Parking generarParking(String nombre, String direccion){
         var aux = new Parking(nombre, direccion);
@@ -41,7 +40,19 @@ public class PreCarga {
         return aux;  
     }
     
-    
+    public void inicio(){
+        var dis = new Discapacitado();
+        var emp = new Empleado();
+        var ele = new Electrico();
+        etiquetas.add(ele); 
+        etiquetas.add(dis);
+        etiquetas.add(emp);
+        SistemaEtiquetas.getInstancia().setDiscapacitado(dis);
+        SistemaEtiquetas.getInstancia().setElectrico(ele);
+        SistemaEtiquetas.getInstancia().setEmpleado(emp);
+
+
+    }
     public ArrayList<Cochera> generarChocherasPrecarga(Parking p){
         var cocheras = new ArrayList<Cochera>();
         var cantidad = new Random();

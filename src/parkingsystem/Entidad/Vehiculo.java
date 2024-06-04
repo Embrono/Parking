@@ -5,6 +5,7 @@
 package parkingsystem.Entidad;
 
 import java.util.ArrayList;
+import parkingsystem.Fachada;
 import simuladortransito.Transitable;
 
 /**
@@ -67,20 +68,21 @@ public abstract class Vehiculo implements Transitable  {
 
     @Override
     public boolean esDiscapacitado() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return Fachada.getInstancia().esDiscapacitado(etiquetas);
     }
 
     @Override
     public boolean esElectrico() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+      return Fachada.getInstancia().esElectrico(etiquetas);
     }
 
     @Override
     public boolean esEmpleado() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return Fachada.getInstancia().esEmpleado(etiquetas);
     }
 
     public boolean isEstacionado() {
+        
         return estacionado;
     }
 

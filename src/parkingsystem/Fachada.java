@@ -4,8 +4,10 @@
  */
 package parkingsystem;
 
+import java.util.ArrayList;
 import observador.Observable;
 import parkingsystem.Entidad.Cochera;
+import parkingsystem.Entidad.Etiqueta;
 import parkingsystem.Entidad.Vehiculo;
 import simuladortransito.Estacionable;
 import simuladortransito.Sensor;
@@ -18,7 +20,7 @@ import simuladortransito.Transitable;
 public class Fachada extends Observable implements Sensor{
     private SistemaEstadia sistemaEstadia = SistemaEstadia.getInstancia();
     private SistemaParking sistemaParking = SistemaParking.getInstancia();  
-    
+    private SistemaEtiquetas sistemaEtiquetas = SistemaEtiquetas.getInstancia();
     public void agregarEstadia(Vehiculo v, Cochera c){
         sistemaEstadia.agregarEstadia(v,c);
     }
@@ -47,4 +49,15 @@ public class Fachada extends Observable implements Sensor{
         c.setOcupada(false);
         avisar(null);
     } 
+    
+    public boolean esElectrico(ArrayList<Etiqueta> lista){
+        return sistemaEtiquetas.esElectrico(lista);
+    }
+    public boolean esEmpleado(ArrayList<Etiqueta> lista){
+        return sistemaEtiquetas.esEmpleado(lista);
+
+    }
+    public boolean esDiscapacitado(ArrayList<Etiqueta> lista){
+        return sistemaEtiquetas.esDiscapacitado(lista);
+    }
 }
