@@ -4,17 +4,23 @@
  */
 package UI;
 
+import observador.IObservador;
+import observador.Observable;
+import parkingsystem.Fachada;
+import parkingsystem.SistemaParking;
+
 /**
  *
  * @author Embrono
  */
-public class TableroDeControl extends javax.swing.JFrame {
+public class TableroDeControl extends javax.swing.JFrame implements IObservador{
 
     /**
      * Creates new form TableroDeControl
      */
     public TableroDeControl() {
         initComponents();
+        Fachada.getInstancia().agregarObservador(this);
     }
 
     /**
@@ -40,7 +46,7 @@ public class TableroDeControl extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableAnomalias = new javax.swing.JTable();
         jCheckBoxMonitor = new javax.swing.JCheckBox();
-        jButton1 = new javax.swing.JButton();
+        jButtonCerrar = new javax.swing.JButton();
 
         jLabel1.setText("jLabel1");
 
@@ -49,11 +55,11 @@ public class TableroDeControl extends javax.swing.JFrame {
 
         jLabel2.setText("Estadias");
 
-        jLabelEstadiasValue.setText("jLabel3");
+        jLabelEstadiasValue.setText("0");
 
         jLabel3.setText("Facturacion:");
 
-        jLabelFacturacionValue.setText("jLabel4");
+        jLabelFacturacionValue.setText("0");
 
         jTableDashBoard.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -87,8 +93,18 @@ public class TableroDeControl extends javax.swing.JFrame {
         }
 
         jButtonCartelera.setText("Cartelera");
+        jButtonCartelera.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonCarteleraMouseClicked(evt);
+            }
+        });
 
         jButtonPrecios.setText("Precios");
+        jButtonPrecios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonPreciosMouseClicked(evt);
+            }
+        });
 
         jTableAnomalias.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -124,7 +140,12 @@ public class TableroDeControl extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Cerrar");
+        jButtonCerrar.setText("Cerrar");
+        jButtonCerrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonCerrarMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -143,19 +164,19 @@ public class TableroDeControl extends javax.swing.JFrame {
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(27, 27, 27)
-                                .addComponent(jLabelEstadiasValue, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabelEstadiasValue, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel3)
-                                .addGap(32, 32, 32)
-                                .addComponent(jLabelFacturacionValue, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabelFacturacionValue, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane1)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 537, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jButton1)
+                                    .addComponent(jButtonCerrar)
                                     .addComponent(jCheckBoxMonitor, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addContainerGap())
         );
@@ -184,7 +205,7 @@ public class TableroDeControl extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jCheckBoxMonitor)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
+                        .addComponent(jButtonCerrar)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -194,6 +215,21 @@ public class TableroDeControl extends javax.swing.JFrame {
     private void jCheckBoxMonitorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMonitorActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jCheckBoxMonitorActionPerformed
+
+    private void jButtonPreciosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonPreciosMouseClicked
+        // TODO add your handling code here:
+        new ListaDePrecio(this, false).setVisible(true);
+    }//GEN-LAST:event_jButtonPreciosMouseClicked
+
+    private void jButtonCarteleraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCarteleraMouseClicked
+        // TODO add your handling code here:
+        new CarteleraElectronica(this, false).setVisible(true);
+    }//GEN-LAST:event_jButtonCarteleraMouseClicked
+
+    private void jButtonCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCerrarMouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jButtonCerrarMouseClicked
 
     /**
      * @param args the command line arguments
@@ -231,8 +267,8 @@ public class TableroDeControl extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonCartelera;
+    private javax.swing.JButton jButtonCerrar;
     private javax.swing.JButton jButtonPrecios;
     private javax.swing.JCheckBox jCheckBoxMonitor;
     private javax.swing.JLabel jLabel1;
@@ -247,4 +283,9 @@ public class TableroDeControl extends javax.swing.JFrame {
     private javax.swing.JTable jTableAnomalias;
     private javax.swing.JTable jTableDashBoard;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void actualizar(Object evento, Observable origen) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

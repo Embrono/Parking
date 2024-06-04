@@ -5,6 +5,8 @@
 package parkingsystem.Entidad;
 
 import java.util.ArrayList;
+import java.util.Date;
+import parkingsystem.Fachada;
 import simuladortransito.Estacionable;
 
 /**
@@ -13,23 +15,28 @@ import simuladortransito.Estacionable;
  */
 public class Cochera implements Estacionable {
 
+    private final int id; 
+    private static int ultimoId = 0;
+    private Parking parking; 
+    private ArrayList<Estadia> estadias;
+    private ArrayList<Etiqueta> etiquetas;
+    private boolean ocupada;
+    
     public Cochera(Parking parking) {
         this.parking = parking;
         id = ++ultimoId;
         estadias = new ArrayList<>();
         etiquetas = new ArrayList<>();
     }
-    private final int id; 
 
     @Override
     public String toString() {
         return "Cochera{" + "id=" + id + ", parking=" + parking.toString() + '}';
     }
-    private static int ultimoId = 0;
-    private Parking parking; 
-    private ArrayList<Estadia> estadias;
-    private ArrayList<Etiqueta> etiquetas;
-    private boolean ocupada;
+
+    public int getId() {
+        return id;
+    }
 
     public boolean isOcupada() {
         return ocupada;
@@ -37,10 +44,6 @@ public class Cochera implements Estacionable {
 
     public void setOcupada(boolean ocupada) {
         this.ocupada = ocupada;
-    }
-    
-    public int getId() {
-        return id;
     }
     
     public Parking getParking() {
@@ -69,6 +72,7 @@ public class Cochera implements Estacionable {
         }
         this.etiquetas = etiquetas;
     }
+        
     @Override
     public String getCodigo() {
         return id + "";
@@ -76,16 +80,29 @@ public class Cochera implements Estacionable {
 
     @Override
     public boolean esDiscapacitado() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return Fachada.getInstancia().esDiscapacitado(etiquetas);
     }
 
     @Override
     public boolean esElectrico() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+      return Fachada.getInstancia().esElectrico(etiquetas);
     }
 
     @Override
     public boolean esEmpleado() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return Fachada.getInstancia().esEmpleado(etiquetas);
+    }
+    
+    public Estadia buscarUltimaEstadia() {
+        if (estadias.isEmpty()) {
+            return null;
+        }
+        Estadia ultimaEstadia = estadias.get(0);
+        for (Estadia estadia : estadias) {
+            if (estadia.getFechaEntrada().after(ultimaEstadia.getFechaEntrada())) {
+                ultimaEstadia = estadia;
+            }
+        }
+        return ultimaEstadia;
     }
 }

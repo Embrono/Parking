@@ -5,12 +5,16 @@
 package parkingsystem;
 
 import java.util.ArrayList;
+import observador.Observable;
 import parkingsystem.Entidad.Cochera;
 import parkingsystem.Entidad.Etiqueta;
 import parkingsystem.Entidad.Parking;
 import parkingsystem.Entidad.Propietario;
 import parkingsystem.Entidad.Tarifa;
 import parkingsystem.Entidad.Vehiculo;
+import simuladortransito.Estacionable;
+import simuladortransito.Sensor;
+import simuladortransito.Transitable;
 
 /**
  *
@@ -25,10 +29,9 @@ public class SistemaParking {
         cochera = new ArrayList<>();
         parkings = new ArrayList<>();
         propietarios = new ArrayList<>();
-        etiquetas = new ArrayList<>();
     }
     // Public method to provide access to the singleton instance
-    public static synchronized SistemaParking getInstancia() {
+    public static SistemaParking getInstancia() {
         if (instancia == null) {
             instancia = new SistemaParking();
         }
@@ -39,7 +42,6 @@ public class SistemaParking {
     private ArrayList<Cochera> cochera;
     private ArrayList<Parking> parkings;
     private ArrayList<Propietario> propietarios;
-    private ArrayList<Etiqueta> etiquetas;
 
     public ArrayList<Vehiculo> getVehiculos() {
         return vehiculos;
@@ -72,13 +74,4 @@ public class SistemaParking {
     public void setPropietarios(ArrayList<Propietario> propietarios) {
         this.propietarios = propietarios;
     }
-
-    public ArrayList<Etiqueta> getEtiquetas() {
-        return etiquetas;
-    }
-
-    public void setEtiquetas(ArrayList<Etiqueta> etiquetas) {
-        this.etiquetas = etiquetas;
-    }
-
 }

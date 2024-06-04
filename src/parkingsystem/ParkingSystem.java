@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import parkingsystem.Entidad.Cochera;
-import parkingsystem.Entidad.Dectector;
+import parkingsystem.Entidad.Etiqueta;
 import parkingsystem.Entidad.Parking;
 import parkingsystem.Entidad.Propietario;
 import parkingsystem.Entidad.Vehiculo;
@@ -37,40 +37,47 @@ public class ParkingSystem {
         // TODO code application logic here
         PreCarga pre = new PreCarga();
         Parking p1 = pre.generarParking("Andres", "Salto y contituyente");
-        Parking p2 = pre.generarParking("Facuando", "Salto y contituyente");
+        Parking p2 = pre.generarParking("Facundo", "Salto y contituyente");
         ArrayList<Propietario> prop = pre.generarPropietarios();
-        ArrayList<Transitable> vehiculos = new ArrayList<>();
+        ArrayList<Transitable> transitables = new ArrayList<>();
         SistemaParking sistema = SistemaParking.getInstancia();
-        
+        Fachada fachada = Fachada.getInstancia();
+                
+        // se agregan los vehículos
         for(var p :  prop){
-            vehiculos.addAll(p.getVehiculos());
+            transitables.addAll(p.getVehiculos());
             sistema.getVehiculos().addAll(p.getVehiculos());
         }
         
-        ArrayList<Estacionable> cocheras = new ArrayList<>(p1.getCocheras());
-        cocheras.addAll(p2.getCocheras());
+        //se agregan las cocheras
+        ArrayList<Estacionable> estacionables = new ArrayList<>(p1.getCocheras());
+        estacionables.addAll(p2.getCocheras());
+
         simulador = SimuladorTransito.getInstancia();
-        simulador.addTransitables(vehiculos);
-        simulador.addEstacionables(cocheras);
+        simulador.addTransitables(transitables);
+        simulador.addEstacionables(estacionables);
+        
+        // se programa un flujo de ingreso inicial para simular el ingreso de vehículos al sistema
         var flujoingreso = new FlujoIngreso("Ingreso Inicial", new Periodo(0, 5),3);
         try {
             simulador.programar(flujoingreso);
-            simulador.iniciar(new Dectector());
+            simulador.iniciar(fachada);
         } catch (ConfiguracionException ex) {
             Logger.getLogger(ParkingSystem.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        // se muestra la interfaz gráfica inicial del sistema de estacionamiento
         new PanelInicial().setVisible(true);
-        new SimuladorIU(null, false,new Dectector(),cocheras,vehiculos).setVisible(true);
+        
+        // se muestra el simulador de interfaz de usuario para visualizar los vehículos y los estacionables (cocheras)
+        new SimuladorIU(null, false,fachada,estacionables,transitables).setVisible(true);
+        
+        // se agregan las cocheras y los parkings
         sistema.getCochera().addAll(p1.getCocheras());
         sistema.getCochera().addAll(p2.getCocheras());
         sistema.getParkings().add(p1);
         sistema.getParkings().add(p2);
         sistema.getPropietarios().addAll(prop);
-        sistema.getEtiquetas().addAll(pre.etiquetas);
-        
-
-        
-        
     }
     
 }

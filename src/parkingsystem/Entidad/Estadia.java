@@ -18,7 +18,32 @@ public class Estadia {
     private Vehiculo vehiculo;
     private ArrayList<Multa> multas;
     private float facturado;
+    private Anomalia anomalia;
+    
+    public Estadia(Date fechaEntrada, Cochera cochera, Vehiculo vehiculo) {
+        this.fechaEntrada = fechaEntrada;
+        this.cochera = cochera;
+        this.vehiculo = vehiculo;
+        this.multas = new ArrayList<Multa>();
+        this.facturado = 0;
+    }
+    
+    public Date getFechaEntrada() {
+        return fechaEntrada;
+    }
 
+    public void setFechaEntrada(Date fechaEntrada) {
+        this.fechaEntrada = fechaEntrada;
+    }
+
+    public Date getFechaSalida() {
+        return fechaSalida;
+    }
+
+    public void setFechaSalida(Date fechaSalida) {
+        this.fechaSalida = fechaSalida;
+    }
+    
     public Cochera getCochera() {
         return cochera;
     }
@@ -42,4 +67,20 @@ public class Estadia {
     public void setMultas(ArrayList<Multa> multas) {
         this.multas = multas;
     }
+    
+    public double getFacturado() {
+        return facturado;
+    }
+
+    public void setFacturado(float facturado) {
+        this.facturado = facturado;
+    }
+    
+    public Anomalia getAnomalia() {
+        return anomalia;
+    }
+
+    public void setAnomalia(Anomalia anomalia) {
+        this.anomalia = anomalia;
+    }   
 }

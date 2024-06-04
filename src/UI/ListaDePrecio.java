@@ -55,6 +55,11 @@ public class ListaDePrecio extends javax.swing.JDialog {
         jTextFieldNuevoValor.setText("jTextField1");
 
         jButtonCerrar.setText("Cerrar");
+        jButtonCerrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonCerrarMouseClicked(evt);
+            }
+        });
 
         jButtonGuardar.setText("Guardar");
 
@@ -100,6 +105,11 @@ public class ListaDePrecio extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButtonCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCerrarMouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jButtonCerrarMouseClicked
 
     /**
      * @param args the command line arguments
