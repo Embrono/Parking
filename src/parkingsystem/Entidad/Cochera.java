@@ -72,21 +72,7 @@ public class Cochera implements Estacionable {
         }
         this.etiquetas = etiquetas;
     }
-    
-    public Estadia buscarUltimaEstadia() {
-        if (!estadias.isEmpty()) {
-            return estadias.get(estadias.size() - 1);
-        }
-        return null;
-    }
-
-    public void registrarIngreso(Vehiculo vehiculo) {
-        Date fechaIngreso = new Date();
-        Estadia nuevaEstadia = new Estadia(fechaIngreso, this, vehiculo);
-        estadias.add(nuevaEstadia);
-        ocupada = true;
-    }
-    
+        
     @Override
     public String getCodigo() {
         return id + "";
@@ -106,5 +92,17 @@ public class Cochera implements Estacionable {
     public boolean esEmpleado() {
         return Fachada.getInstancia().esEmpleado(etiquetas);
     }
-
+    
+    public Estadia buscarUltimaEstadia() {
+        if (estadias.isEmpty()) {
+            return null;
+        }
+        Estadia ultimaEstadia = estadias.get(0);
+        for (Estadia estadia : estadias) {
+            if (estadia.getFechaEntrada().after(ultimaEstadia.getFechaEntrada())) {
+                ultimaEstadia = estadia;
+            }
+        }
+        return ultimaEstadia;
+    }
 }

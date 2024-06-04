@@ -5,6 +5,8 @@
 package parkingsystem;
 
 import java.util.ArrayList;
+import java.util.Date;
+import parkingsystem.Entidad.Anomalia;
 import parkingsystem.Entidad.Cochera;
 import parkingsystem.Entidad.Estadia;
 import parkingsystem.Entidad.Vehiculo;
@@ -38,7 +40,20 @@ public class SistemaEstadia {
     }
     
     public void agregarEstadia(Vehiculo v, Cochera c){
+        Date fecha = new Date();
         
+        if(c.isOcupada()){
+            Estadia ultimaEstadia = c.buscarUltimaEstadia();
+            ultimaEstadia.setFechaSalida(null);
+            ultimaEstadia.setFacturado(0);
+            ultimaEstadia.setMultas(new ArrayList());
+            
+            Anomalia nuevaAnomalia = new Anomalia(ultimaEstadia, fecha, "HOUDINI");
+            ultimaEstadia.setAnomalia(nuevaAnomalia);
+        }
+        
+        estadias.add(new Estadia(fecha, c, v));
+        c.setOcupada(true);
     }
     
 }

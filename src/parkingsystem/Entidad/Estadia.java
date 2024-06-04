@@ -18,6 +18,7 @@ public class Estadia {
     private Vehiculo vehiculo;
     private ArrayList<Multa> multas;
     private float facturado;
+    private Anomalia anomalia;
     
     public Estadia(Date fechaEntrada, Cochera cochera, Vehiculo vehiculo) {
         this.fechaEntrada = fechaEntrada;
@@ -75,4 +76,11 @@ public class Estadia {
         this.facturado = facturado;
     }
     
+    public Anomalia getAnomalia() {
+        return anomalia;
+    }
+
+    public void setAnomalia(Anomalia anomalia) {
+        this.anomalia = anomalia;
+    }   
 }

@@ -21,10 +21,7 @@ public class Fachada extends Observable implements Sensor{
     private SistemaEstadia sistemaEstadia = SistemaEstadia.getInstancia();
     private SistemaParking sistemaParking = SistemaParking.getInstancia();  
     private SistemaEtiquetas sistemaEtiquetas = SistemaEtiquetas.getInstancia();
-    public void agregarEstadia(Vehiculo v, Cochera c){
-        sistemaEstadia.agregarEstadia(v,c);
-    }
-    
+        
     private static Fachada instancia = new Fachada();
 
     public static Fachada getInstancia() {
@@ -38,7 +35,8 @@ public class Fachada extends Observable implements Sensor{
         Vehiculo v = (Vehiculo)transitable;
         Cochera c = (Cochera) estacionable;
         v.setEstacionado(true);
-        c.setOcupada(true);     
+        c.setOcupada(true); 
+        sistemaEstadia.agregarEstadia(v, c);
     }
 
     @Override
