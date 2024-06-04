@@ -46,10 +46,4 @@ public abstract class Etiqueta {
     public void setCochera(ArrayList<Cochera> cochera) {
         this.cocheras = cochera;
     }
-    
-    private enum TipoEtiqueta{
-        Discapacitado,
-        Electrico,
-        Empleado
-    }
 }

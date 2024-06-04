@@ -16,4 +16,5 @@ public enum eventos {
     MULTA_EMITIDA,
     CAMBIO_FACTOR_DEMANDA,
     DISPONIBILIDAD,
+    ANOMALIAS
 }

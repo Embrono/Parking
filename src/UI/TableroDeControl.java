@@ -4,17 +4,23 @@
  */
 package UI;
 
+import observador.IObservador;
+import observador.Observable;
+import parkingsystem.Fachada;
+import parkingsystem.SistemaParking;
+
 /**
  *
  * @author Embrono
  */
-public class TableroDeControl extends javax.swing.JFrame {
+public class TableroDeControl extends javax.swing.JFrame implements IObservador{
 
     /**
      * Creates new form TableroDeControl
      */
     public TableroDeControl() {
         initComponents();
+        Fachada.getInstancia().agregarObservador(this);
     }
 
     /**
@@ -277,4 +283,9 @@ public class TableroDeControl extends javax.swing.JFrame {
     private javax.swing.JTable jTableAnomalias;
     private javax.swing.JTable jTableDashBoard;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void actualizar(Object evento, Observable origen) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

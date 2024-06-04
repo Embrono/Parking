@@ -5,6 +5,7 @@
 package parkingsystem.Entidad;
 
 import java.util.ArrayList;
+import java.util.Date;
 import simuladortransito.Estacionable;
 
 /**
@@ -13,23 +14,28 @@ import simuladortransito.Estacionable;
  */
 public class Cochera implements Estacionable {
 
+    private final int id; 
+    private static int ultimoId = 0;
+    private Parking parking; 
+    private ArrayList<Estadia> estadias;
+    private ArrayList<Etiqueta> etiquetas;
+    private boolean ocupada;
+    
     public Cochera(Parking parking) {
         this.parking = parking;
         id = ++ultimoId;
         estadias = new ArrayList<>();
         etiquetas = new ArrayList<>();
     }
-    private final int id; 
 
     @Override
     public String toString() {
         return "Cochera{" + "id=" + id + ", parking=" + parking.toString() + '}';
     }
-    private static int ultimoId = 0;
-    private Parking parking; 
-    private ArrayList<Estadia> estadias;
-    private ArrayList<Etiqueta> etiquetas;
-    private boolean ocupada;
+
+    public int getId() {
+        return id;
+    }
 
     public boolean isOcupada() {
         return ocupada;
@@ -37,10 +43,6 @@ public class Cochera implements Estacionable {
 
     public void setOcupada(boolean ocupada) {
         this.ocupada = ocupada;
-    }
-    
-    public int getId() {
-        return id;
     }
     
     public Parking getParking() {
@@ -69,6 +71,21 @@ public class Cochera implements Estacionable {
         }
         this.etiquetas = etiquetas;
     }
+    
+    public Estadia buscarUltimaEstadia() {
+        if (!estadias.isEmpty()) {
+            return estadias.get(estadias.size() - 1);
+        }
+        return null;
+    }
+
+    public void registrarIngreso(Vehiculo vehiculo) {
+        Date fechaIngreso = new Date();
+        Estadia nuevaEstadia = new Estadia(fechaIngreso, this, vehiculo);
+        estadias.add(nuevaEstadia);
+        ocupada = true;
+    }
+    
     @Override
     public String getCodigo() {
         return id + "";
