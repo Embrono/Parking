@@ -9,5 +9,22 @@ package parkingsystem.Entidad;
  * @author Embrono
  */
 public class Empleado extends Etiqueta{
+
+
+
+    @Override
+    public boolean esDiscapacitado() {
+        return false;
+    }
+
+    @Override
+    public boolean esElectrico() {
+        return false;
+    }
+
+    @Override
+    public boolean esEmpleado() {
+        return true;
+    }
     
 }
