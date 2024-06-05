@@ -4,17 +4,22 @@
  */
 package UI;
 
+import observador.IObservador;
+import observador.Observable;
+import parkingsystem.Fachada;
+
 /**
  *
  * @author Embrono
  */
-public class ListaDePrecio extends javax.swing.JDialog {
+public class ListaDePrecio extends javax.swing.JDialog implements IObservador{
 
     /**
      * Creates new form ListaDePrecio
      */
     public ListaDePrecio(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        Fachada.getInstancia().agregarObservador(this);
         initComponents();
     }
 
@@ -108,6 +113,7 @@ public class ListaDePrecio extends javax.swing.JDialog {
 
     private void jButtonCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCerrarMouseClicked
         // TODO add your handling code here:
+        Fachada.getInstancia().quitarObservador(this);
         this.dispose();
     }//GEN-LAST:event_jButtonCerrarMouseClicked
 
@@ -161,4 +167,9 @@ public class ListaDePrecio extends javax.swing.JDialog {
     private javax.swing.JTable jTableListado;
     private javax.swing.JTextField jTextFieldNuevoValor;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void actualizar(Object evento, Observable origen) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

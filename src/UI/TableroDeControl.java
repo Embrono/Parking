@@ -4,8 +4,11 @@
  */
 package UI;
 
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
 import observador.IObservador;
 import observador.Observable;
+import parkingsystem.Entidad.Parking;
 import parkingsystem.Fachada;
 import parkingsystem.SistemaParking;
 
@@ -21,6 +24,7 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador{
     public TableroDeControl() {
         initComponents();
         Fachada.getInstancia().agregarObservador(this);
+        DibujarGridParking();   
     }
 
     /**
@@ -228,7 +232,9 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador{
 
     private void jButtonCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCerrarMouseClicked
         // TODO add your handling code here:
+        Fachada.getInstancia().quitarObservador(this);
         this.dispose();
+        
     }//GEN-LAST:event_jButtonCerrarMouseClicked
 
     /**
@@ -286,6 +292,52 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador{
 
     @Override
     public void actualizar(Object evento, Observable origen) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    public void DibujarGridParking(){
+         ArrayList<Parking> listaParkings = Fachada.getInstancia().getParkings();
+        
+        // Crear el modelo de la tabla
+        DefaultTableModel model = new DefaultTableModel();
+        
+        // Añadir columnas
+        model.addColumn("Parking");
+        model.addColumn("# Ocupadas");
+        model.addColumn("# Libres");
+        model.addColumn("Estado");
+        model.addColumn("Factor Demanda");
+        model.addColumn("# Estadias");
+        model.addColumn("Multas");
+        model.addColumn("SubTotal");
+        
+        // Establecer el número de filas
+        model.setRowCount(listaParkings.size());
+        
+        int fila = 0;
+        
+        // Rellenar las filas con los datos de Parking
+        for (Parking p : listaParkings) {
+            //model.setValueAt(p.getNombre(), fila, 0);
+            //model.setValueAt(p.getNumeroOcupadas(), fila, 1);
+            //model.setValueAt(p.getNumeroLibres(), fila, 2);
+            //model.setValueAt(p.getEstado(), fila, 3);
+            //model.setValueAt(p.getFactorDemanda(), fila, 4);
+            //model.setValueAt(p.getNumeroEstadias(), fila, 5);
+            //model.setValueAt(p.getNumeroMultas(), fila, 6);
+            //model.setValueAt(p.getSubTotal(), fila, 7);
+            
+            model.setValueAt("Test 1: "+ fila, fila, 0);
+            model.setValueAt("Test 1: "+ fila, fila, 1);
+            model.setValueAt("Test 1: "+ fila, fila, 2);
+            model.setValueAt("Test 1: "+ fila, fila, 3);
+            model.setValueAt("Test 1: "+ fila, fila, 4);
+            model.setValueAt("Test 1: "+ fila, fila, 5);
+            model.setValueAt("Test 1: "+ fila, fila, 6);
+            model.setValueAt("Test 1: "+ fila, fila, 7);
+            fila++;
+        }
+        
+        // Establecer el modelo en la tabla
+        jTableDashBoard.setModel(model);
     }
 }

@@ -49,7 +49,7 @@ public abstract class Etiqueta {
     public abstract boolean esElectrico();
     public abstract boolean esDiscapacitado();
     public abstract boolean esEmpleado();
-    public abstract float montoASumarMulta(float precioEstadia, float duracion);
+    protected abstract float montoASumarMulta(float precioEstadia, float duracion);
     
 
 }

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import observador.Observable;
 import parkingsystem.Entidad.Cochera;
 import parkingsystem.Entidad.Etiqueta;
+import parkingsystem.Entidad.Parking;
 import parkingsystem.Entidad.Vehiculo;
 import simuladortransito.Estacionable;
 import simuladortransito.Sensor;
@@ -47,4 +48,8 @@ public class Fachada extends Observable implements Sensor{
         c.setOcupada(false);
         avisar(null);
     } 
+    
+    public ArrayList<Parking> getParkings(){
+        return sistemaParking.getParkings();
+    }
 }
