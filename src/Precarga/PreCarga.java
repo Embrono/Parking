@@ -47,10 +47,6 @@ public class PreCarga {
         etiquetas.add(ele); 
         etiquetas.add(dis);
         etiquetas.add(emp);
-        SistemaEtiquetas.getInstancia().setDiscapacitado(dis);
-        SistemaEtiquetas.getInstancia().setElectrico(ele);
-        SistemaEtiquetas.getInstancia().setEmpleado(emp);
-
 
     }
     public ArrayList<Cochera> generarChocherasPrecarga(Parking p){

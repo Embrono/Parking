@@ -17,34 +17,6 @@ import parkingsystem.Entidad.Etiqueta;
 public class SistemaEtiquetas {
     private static SistemaEtiquetas instancia;
     private ArrayList<Etiqueta> etiquetas;
-    private Discapacitado discapacitado;
-    private Electrico electrico; 
-    private Empleado empleado; 
-
-    public Discapacitado getDiscapacitado() {
-        return discapacitado;
-    }
-
-    public void setDiscapacitado(Discapacitado discapacitado) {
-        this.discapacitado = discapacitado;
-    }
-
-    public Electrico getElectrico() {
-        return electrico;
-    }
-
-    public void setElectrico(Electrico electrico) {
-        this.electrico = electrico;
-    }
-
-    public Empleado getEmpleado() {
-        return empleado;
-    }
-
-    public void setEmpleado(Empleado empleado) {
-        this.empleado = empleado;
-    }
-
      public static SistemaEtiquetas getInstancia() {
         if (instancia == null) {
             instancia = new SistemaEtiquetas();
@@ -60,15 +32,5 @@ public class SistemaEtiquetas {
 
     public void setEtiquetas(ArrayList<Etiqueta> etiquetas) {
         this.etiquetas = etiquetas;
-    }
-        
-    public boolean esElectrico(ArrayList<Etiqueta> lista){
-        return lista.contains(electrico);
-    }
-    public boolean esEmpleado(ArrayList<Etiqueta> lista){
-        return lista.contains(empleado);
-    }
-    public boolean esDiscapacitado(ArrayList<Etiqueta> lista){
-        return lista.contains(discapacitado);
     }
 }

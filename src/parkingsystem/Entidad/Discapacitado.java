@@ -24,5 +24,10 @@ public class Discapacitado extends Etiqueta {
     public boolean esEmpleado() {
         return false;
     }
+
+    @Override
+    protected float montoASumarMulta(float precioEstadia, float duracion) {
+        return 250;
+    }
     
 }

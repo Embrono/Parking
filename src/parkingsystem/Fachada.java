@@ -47,15 +47,4 @@ public class Fachada extends Observable implements Sensor{
         c.setOcupada(false);
         avisar(null);
     } 
-    
-    public boolean esElectrico(ArrayList<Etiqueta> lista){
-        return sistemaEtiquetas.esElectrico(lista);
-    }
-    public boolean esEmpleado(ArrayList<Etiqueta> lista){
-        return sistemaEtiquetas.esEmpleado(lista);
-
-    }
-    public boolean esDiscapacitado(ArrayList<Etiqueta> lista){
-        return sistemaEtiquetas.esDiscapacitado(lista);
-    }
 }

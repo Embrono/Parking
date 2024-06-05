@@ -80,18 +80,34 @@ public class Cochera implements Estacionable {
 
    @Override
     public boolean esDiscapacitado() {
-        return Fachada.getInstancia().esDiscapacitado(etiquetas);
+        for(Etiqueta e : etiquetas){
+            if(e.esDiscapacitado()){
+                return true;
+            }
+        }
+        return false;
     }
-
+    
     @Override
     public boolean esElectrico() {
-      return Fachada.getInstancia().esElectrico(etiquetas);
+        for(Etiqueta e : etiquetas){
+            if(e.esElectrico()){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean esEmpleado() {
-        return Fachada.getInstancia().esEmpleado(etiquetas);
+        for(Etiqueta e : etiquetas){
+            if(e.esEmpleado()){
+                return true;
+            }
+        }
+        return false;
     }
+
     
     public Estadia buscarUltimaEstadia() {
         if (estadias.isEmpty()) {

@@ -108,19 +108,9 @@ public class SistemaEstadia {
 
         float montoEstadia = pb * duracionUT * fd;
 
-        SistemaEtiquetas sistemaEtiquetas = SistemaEtiquetas.getInstancia();
-
         float montoMultas = 0;
         for (Multa multa : e.getMultas()) {
-            if (sistemaEtiquetas.esElectrico(e.getCochera().getEtiquetas()) && !sistemaEtiquetas.esElectrico(e.getVehiculo().getEtiquetas())) {
-                montoMultas += montoEstadia * 0.5;
-            } else if (sistemaEtiquetas.esEmpleado(e.getCochera().getEtiquetas()) && !sistemaEtiquetas.esEmpleado(e.getVehiculo().getEtiquetas())) {
-                montoMultas += (duracionUT / 10);
-            } else if (sistemaEtiquetas.esDiscapacitado(e.getCochera().getEtiquetas()) && !sistemaEtiquetas.esDiscapacitado(e.getVehiculo().getEtiquetas())) {
-                montoMultas += 250;
-            } else {
-                montoMultas += multa.getMonto();
-            }
+            montoMultas += multa.getMontoTotalMulta(montoEstadia, duracionUT);
         }
 
         float valorFacturado = montoEstadia + montoMultas;

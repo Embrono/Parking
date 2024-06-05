@@ -27,5 +27,10 @@ public class Electrico extends Etiqueta{
     public boolean esEmpleado() {
         return false;
     }
+
+    @Override
+    public float montoASumarMulta(float precioEstadia, float duracion) {
+        return duracion / 10;
+    }
     
 }

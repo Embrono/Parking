@@ -26,5 +26,10 @@ public class Empleado extends Etiqueta{
     public boolean esEmpleado() {
         return true;
     }
+
+    @Override
+    public float montoASumarMulta(float precioEstadia, float duracion) {
+        return precioEstadia * 0.5f;
+    }
     
 }
