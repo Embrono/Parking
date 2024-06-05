@@ -11,6 +11,13 @@ package parkingsystem.Entidad;
 public class Multa {
     private Estadia estadia;
     private Etiqueta etiqueta;
+    private float monto;
+    
+    public Multa(Estadia estadia, Etiqueta etiqueta, float monto) {
+        this.estadia = estadia;
+        this.etiqueta = etiqueta;
+        this.monto = monto;
+    }
 
     public Estadia getEstadia() {
         return estadia;
@@ -26,5 +33,13 @@ public class Multa {
 
     public void setEtiqueta(Etiqueta etiqueta) {
         this.etiqueta = etiqueta;
+    }
+    
+    public float getMonto() {
+        return monto;
+    }
+
+    public void setMonto(float monto) {
+        this.monto = monto;
     }
 }

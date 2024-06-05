@@ -44,4 +44,11 @@ public class Propietario {
     public void agregarPago(Pago pago){
         cuentaCorriente.add(pago);
     }
+    
+    public void descontarSaldo(double monto) {
+    // Resta el monto del saldo del propietario
+    for (Pago pago : cuentaCorriente) {
+        pago.setMonto(pago.getMonto() - monto);
+    }
+}
 }

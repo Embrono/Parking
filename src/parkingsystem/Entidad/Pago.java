@@ -9,19 +9,20 @@ package parkingsystem.Entidad;
  * @author Embrono
  */
 public class Pago {
-
+    
+    double monto;
+    Propietario propietario;
+    
     public Pago(float monto, Propietario propietario) {
         this.monto = monto;
         this.propietario = propietario;
     }
-    float monto;
-    Propietario propietario;
 
-    public float getMonto() {
+    public double getMonto() {
         return monto;
     }
 
-    public void setMonto(float monto) {
+    public void setMonto(double monto) {
         this.monto = monto;
     }
 

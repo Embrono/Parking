@@ -20,6 +20,7 @@ public abstract class Vehiculo implements Transitable  {
     private TipoVehiculo tipo;
     private boolean estacionado;
     private static int id = 0;
+    private Anomalia anomalia;
     
     public ArrayList<Estadia> getEstadias() {
         return estadias;
@@ -59,6 +60,14 @@ public abstract class Vehiculo implements Transitable  {
 
     public void setTipo(TipoVehiculo tipo) {
         this.tipo = tipo;
+    }
+    
+    public Anomalia getAnomalia() {
+        return anomalia;
+    }
+
+    public void setAnomalia(Anomalia anomalia) {
+        this.anomalia = anomalia;
     }
 
     @Override
