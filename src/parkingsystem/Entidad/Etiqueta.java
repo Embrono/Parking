@@ -46,4 +46,8 @@ public abstract class Etiqueta {
     public void setCochera(ArrayList<Cochera> cochera) {
         this.cocheras = cochera;
     }
+    public abstract boolean esElectrico();
+    public abstract boolean esDiscapacitado();
+    public abstract boolean esEmpleado();
+
 }

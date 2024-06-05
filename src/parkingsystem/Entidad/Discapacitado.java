@@ -10,4 +10,19 @@ package parkingsystem.Entidad;
  */
 public class Discapacitado extends Etiqueta {
     
+       @Override
+    public boolean esDiscapacitado() {
+        return true;
+    }
+
+    @Override
+    public boolean esElectrico() {
+        return false;
+    }
+
+    @Override
+    public boolean esEmpleado() {
+        return false;
+    }
+    
 }

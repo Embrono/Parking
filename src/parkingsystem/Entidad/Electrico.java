@@ -13,5 +13,19 @@ public class Electrico extends Etiqueta{
     public Electrico( ) {
         super();
     }
+       @Override
+    public boolean esDiscapacitado() {
+        return false;
+    }
+
+    @Override
+    public boolean esElectrico() {
+        return true;
+    }
+
+    @Override
+    public boolean esEmpleado() {
+        return false;
+    }
     
 }
