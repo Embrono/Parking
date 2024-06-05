@@ -77,32 +77,17 @@ public abstract class Vehiculo implements Transitable  {
 
     @Override
     public boolean esDiscapacitado() {
-        for(Etiqueta e: etiquetas){
-            if(e.esDiscapacitado()){
-                return true;
-            }
-        }
-        return false;
+        return Fachada.getInstancia().esDiscapacitado(etiquetas);
     }
 
     @Override
     public boolean esElectrico() {
-        for(Etiqueta e: etiquetas){
-            if(e.esElectrico()){
-                return true;
-            }
-        }
-        return false;
+      return Fachada.getInstancia().esElectrico(etiquetas);
     }
 
     @Override
     public boolean esEmpleado() {
-        for(Etiqueta e: etiquetas){
-            if(e.esEmpleado()){
-                return true;
-            }
-        }
-        return false;
+        return Fachada.getInstancia().esEmpleado(etiquetas);
     }
 
     public boolean isEstacionado() {
