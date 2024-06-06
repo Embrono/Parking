@@ -39,8 +39,13 @@ public class ListaDePrecio extends javax.swing.JDialog implements IObservador{
         jButtonCerrar = new javax.swing.JButton();
         jButtonGuardar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Lista de precio");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jTableListado.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -116,6 +121,12 @@ public class ListaDePrecio extends javax.swing.JDialog implements IObservador{
         Fachada.getInstancia().quitarObservador(this);
         this.dispose();
     }//GEN-LAST:event_jButtonCerrarMouseClicked
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        Fachada.getInstancia().quitarObservador(this);
+        this.dispose();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

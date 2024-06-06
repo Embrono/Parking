@@ -41,8 +41,13 @@ public class CarteleraElectronica extends javax.swing.JDialog implements IObserv
         jTableCartelera = new javax.swing.JTable();
         jButtonCerrar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Caterlera Electronica");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jLabelDisponibilidad.setText("Disponibilidad:");
 
@@ -155,6 +160,12 @@ public class CarteleraElectronica extends javax.swing.JDialog implements IObserv
         Fachada.getInstancia().quitarObservador(this);
         this.dispose();
     }//GEN-LAST:event_jButtonCerrarMouseClicked
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        Fachada.getInstancia().quitarObservador(this);
+        this.dispose();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

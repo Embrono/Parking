@@ -55,8 +55,13 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador{
 
         jLabel1.setText("jLabel1");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Tablero de control");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jLabel2.setText("Estadias");
 
@@ -237,6 +242,12 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador{
         this.dispose();
         
     }//GEN-LAST:event_jButtonCerrarMouseClicked
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        Fachada.getInstancia().quitarObservador(this);
+        this.dispose();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
