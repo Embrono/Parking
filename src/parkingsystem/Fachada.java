@@ -6,7 +6,9 @@ package parkingsystem;
 
 import java.util.ArrayList;
 import observador.Observable;
+import parkingsystem.Entidad.Anomalia;
 import parkingsystem.Entidad.Cochera;
+import parkingsystem.Entidad.Estadia;
 import parkingsystem.Entidad.Etiqueta;
 import parkingsystem.Entidad.Parking;
 import parkingsystem.Entidad.Vehiculo;
@@ -23,6 +25,8 @@ public class Fachada extends Observable implements Sensor{
     private SistemaEstadia sistemaEstadia = SistemaEstadia.getInstancia();
     private SistemaParking sistemaParking = SistemaParking.getInstancia();  
     private SistemaEtiquetas sistemaEtiquetas = SistemaEtiquetas.getInstancia();
+    private SistemaAnomalia sistemaAnomalia = SistemaAnomalia.getInstancia();
+
         
     private static Fachada instancia = new Fachada();
 
@@ -34,23 +38,12 @@ public class Fachada extends Observable implements Sensor{
 
     @Override
     public void ingreso(Transitable transitable, Estacionable estacionable) {
-        Vehiculo v = (Vehiculo)transitable;
-        Cochera c = (Cochera) estacionable;
-        v.setEstacionado(true);
-        c.setOcupada(true); 
-        sistemaEstadia.agregarEstadia(v, c);
-        avisar(eventos.INGRESO);
-
+        sistemaEstadia.agregarEstadia(transitable, estacionable);
     }
 
     @Override
     public void egreso(Transitable transitable, Estacionable estacionable) {
-        Vehiculo v = (Vehiculo)transitable;
-        Cochera c = (Cochera) estacionable;
-        v.setEstacionado(false);
-        c.setOcupada(false);
-        avisar(eventos.EGRESO);
-
+        sistemaEstadia.egresarEstadia(transitable, estacionable);
     } 
     
     public ArrayList<Parking> getParkings(){
@@ -59,5 +52,17 @@ public class Fachada extends Observable implements Sensor{
 
     public int getEstadiasCantidad(Parking parking) {
         return parking.getEstadias().size();
+    }
+
+    public void registrarAnomaliaMistery(Cochera cochera) {
+        sistemaAnomalia.registrarAnomaliaMistery(cochera);
+    }
+
+    public void registrarAnomaliaTransportador(Estadia estadia) {
+        sistemaAnomalia.registrarAnomaliaTransportador(estadia);
+    }
+
+    public ArrayList<Anomalia> getAnomalias() {
+        return sistemaAnomalia.getAnomalias();
     }
 }

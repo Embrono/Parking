@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import observador.IObservador;
 import observador.Observable;
+import parkingsystem.Entidad.Anomalia;
 import parkingsystem.Entidad.Parking;
 import parkingsystem.Entidad.eventos;
 import parkingsystem.Fachada;
@@ -308,6 +309,8 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador{
             DibujarGridParking();
         }else if(evento.equals(eventos.EGRESO)){
             DibujarGridParking();
+        }else if(evento.equals(eventos.ANOMALIAS)){
+            DibujarGridAnomalia();
         }
     }
     
@@ -334,15 +337,6 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador{
         
         // Rellenar las filas con los datos de Parking
         for (Parking p : listaParkings) {
-            //model.setValueAt(p.getNombre(), fila, 0);
-            //model.setValueAt(p.getNumeroOcupadas(), fila, 1);
-            //model.setValueAt(p.getNumeroLibres(), fila, 2);
-            //model.setValueAt(p.getEstado(), fila, 3);
-            //model.setValueAt(p.getFactorDemanda(), fila, 4);
-            //model.setValueAt(p.getNumeroEstadias(), fila, 5);
-            //model.setValueAt(p.getNumeroMultas(), fila, 6);
-            //model.setValueAt(p.getSubTotal(), fila, 7);
-            
             model.setValueAt(p.getNombre(), fila, 0);
             model.setValueAt(p.getOcupacion(), fila, 1);
             model.setValueAt(p.getLibres(), fila, 2);
@@ -356,5 +350,25 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador{
         
         // Establecer el modelo en la tabla
         jTableDashBoard.setModel(model);
+    }
+
+    private void DibujarGridAnomalia() {
+        ArrayList<Anomalia> listaAnomalias = Fachada.getInstancia().getAnomalias();
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Fecha/Hora");
+        model.addColumn("Propietario");
+        model.addColumn("Codigo Anomalia");
+        model.addColumn("Cochera");
+        model.setRowCount(listaAnomalias.size());
+        
+        int fila = 0;
+            for (Anomalia a : listaAnomalias) {
+            model.setValueAt(a.getFechaHoraDeteccion(), fila, 0);
+            model.setValueAt("Propietario", fila, 1);
+            model.setValueAt(a.getCodigoError(), fila, 2);
+            model.setValueAt(a.getEstadia().getCochera().getId(), fila, 3);
+            fila++;
+        }
+        jTableAnomalias.setModel(model);
     }
 }
