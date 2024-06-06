@@ -5,6 +5,7 @@
 package parkingsystem.Entidad;
 
 import java.util.ArrayList;
+import parkingsystem.Fachada;
 import simuladortransito.Estacionable;
 import simuladortransito.Sensor;
 import simuladortransito.Transitable;
@@ -13,7 +14,7 @@ import simuladortransito.Transitable;
  *
  * @author Embrono
  */
-public class Parking implements Sensor{
+public class Parking{
     
     private String nombre;
     private String direccion;
@@ -21,7 +22,7 @@ public class Parking implements Sensor{
     private ArrayList<Tarifa> Tarifas;
     private float factorDemanda;
     private long ultimaActualizacion;
-
+    private ArrayList<Estadia> estadias = new ArrayList<>();
     public Parking(String nombre, String direccion) {
         this.nombre = nombre;
         this.direccion = direccion;
@@ -29,6 +30,15 @@ public class Parking implements Sensor{
         Cocheras = new ArrayList<>();
         this.factorDemanda = 1.0f;
         this.ultimaActualizacion = System.currentTimeMillis() / 1000;
+    }
+    
+    
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getDireccion() {
+        return direccion;
     }
 
     @Override
@@ -67,17 +77,6 @@ public class Parking implements Sensor{
     public void setUltimaActualizacion(long ultimaActualizacion) {
         this.ultimaActualizacion = ultimaActualizacion;
     }
-
-    @Override
-    public void ingreso(Transitable transitable, Estacionable estacionable) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void egreso(Transitable transitable, Estacionable estacionable) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    
     // Agregar este método para obtener una tarifa según el tipo de vehículo
     public Tarifa getTarifario() {
         // Suponiendo que tienes una lista de tarifas, y seleccionas la adecuada para el tipo de vehículo
@@ -115,6 +114,10 @@ public class Parking implements Sensor{
         this.ultimaActualizacion = tiempoActual;
     }
 
+    public ArrayList<Estadia> getEstadias() {
+        return estadias;
+    }
+    
     public int getOcupacion() {
         int ocupadas = 0;
         for (Cochera cochera : Cocheras) {
@@ -124,4 +127,38 @@ public class Parking implements Sensor{
         }
         return ocupadas;
     }
+    public int getLibres() {
+        int ocupadas = 0;
+        for (Cochera cochera : Cocheras) {
+            if (!cochera.isOcupada()) {
+                ocupadas++;
+            }
+        }
+        return ocupadas;
+    }
+
+    public int getEstadoTendencia() {
+        return 1;
+    }
+
+    public int getCantidadEstadias() {
+        return this.estadias.size();
+    }
+
+    public float getSubTotalCobradoMulta() {
+        float total = 0;
+        for(Estadia e: estadias){
+            total+= e.getTotalMulta();
+        }
+        return total;
+    }
+
+    public float GetSubTotalParking() {
+        float total = 0;
+        for(Estadia e: estadias){
+            total+= e.getTotal();
+        }
+        return total;
+    }
+    
 }

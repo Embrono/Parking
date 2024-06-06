@@ -26,6 +26,7 @@ public class Estadia {
         this.vehiculo = vehiculo;
         this.multas = new ArrayList<Multa>();
         this.facturado = 0;
+        cochera.getParking().getEstadias().add(this);
     }
     
     public Date getFechaEntrada() {
@@ -68,7 +69,7 @@ public class Estadia {
         this.multas = multas;
     }
     
-    public double getFacturado() {
+    public float getFacturado() {
         return facturado;
     }
 
@@ -83,4 +84,22 @@ public class Estadia {
     public void setAnomalia(Anomalia anomalia) {
         this.anomalia = anomalia;
     }   
+    
+    public Parking getParking(){
+        return this.cochera.getParking();
+    }
+    
+    public float getTotalMulta(){
+        float total = 0;
+        for(Multa m: multas){
+            total+= m.getMontoTotalMulta();
+        }
+        return total;
+    }
+    public float getDuracion(){
+       return (fechaSalida.getTime() - fechaEntrada.getTime()) / 1000;
+    }
+    public float getTotal(){
+        return this.facturado + getTotalMulta();
+    }
 }

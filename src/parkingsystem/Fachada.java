@@ -10,6 +10,7 @@ import parkingsystem.Entidad.Cochera;
 import parkingsystem.Entidad.Etiqueta;
 import parkingsystem.Entidad.Parking;
 import parkingsystem.Entidad.Vehiculo;
+import parkingsystem.Entidad.eventos;
 import simuladortransito.Estacionable;
 import simuladortransito.Sensor;
 import simuladortransito.Transitable;
@@ -38,6 +39,8 @@ public class Fachada extends Observable implements Sensor{
         v.setEstacionado(true);
         c.setOcupada(true); 
         sistemaEstadia.agregarEstadia(v, c);
+        avisar(eventos.INGRESO);
+
     }
 
     @Override
@@ -46,10 +49,15 @@ public class Fachada extends Observable implements Sensor{
         Cochera c = (Cochera) estacionable;
         v.setEstacionado(false);
         c.setOcupada(false);
-        avisar(null);
+        avisar(eventos.EGRESO);
+
     } 
     
     public ArrayList<Parking> getParkings(){
         return sistemaParking.getParkings();
+    }
+
+    public int getEstadiasCantidad(Parking parking) {
+        return parking.getEstadias().size();
     }
 }

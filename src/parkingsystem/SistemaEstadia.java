@@ -108,11 +108,7 @@ public class SistemaEstadia {
 
         float montoEstadia = pb * duracionUT * fd;
 
-        float montoMultas = 0;
-        for (Multa multa : e.getMultas()) {
-            montoMultas += multa.getMontoTotalMulta(montoEstadia, duracionUT);
-        }
-
+        float montoMultas = e.getTotalMulta();
         float valorFacturado = montoEstadia + montoMultas;
         e.setFacturado(valorFacturado);
 
@@ -122,7 +118,7 @@ public class SistemaEstadia {
     
     private void registrarAnomaliaTransportador(Vehiculo v, Cochera c) {
         Estadia estadia = c.buscarUltimaEstadia();
-        estadia.setMultas(null);
+        estadia.setMultas(new ArrayList<>());
         Anomalia anomaliaEstadia = new Anomalia(estadia, new Date(), "TRANSPORTADOR1");
         estadia.setAnomalia(anomaliaEstadia);
         Anomalia anomaliaVehiculo = new Anomalia(null, new Date(), "TRANSPORTADOR2");

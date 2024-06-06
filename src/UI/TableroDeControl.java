@@ -9,6 +9,7 @@ import javax.swing.table.DefaultTableModel;
 import observador.IObservador;
 import observador.Observable;
 import parkingsystem.Entidad.Parking;
+import parkingsystem.Entidad.eventos;
 import parkingsystem.Fachada;
 import parkingsystem.SistemaParking;
 
@@ -292,6 +293,11 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador{
 
     @Override
     public void actualizar(Object evento, Observable origen) {
+        if(evento.equals(eventos.INGRESO)){
+            DibujarGridParking();
+        }else if(evento.equals(eventos.EGRESO)){
+            DibujarGridParking();
+        }
     }
     
     public void DibujarGridParking(){
@@ -326,14 +332,14 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador{
             //model.setValueAt(p.getNumeroMultas(), fila, 6);
             //model.setValueAt(p.getSubTotal(), fila, 7);
             
-            model.setValueAt("Test 1: "+ fila, fila, 0);
-            model.setValueAt("Test 1: "+ fila, fila, 1);
-            model.setValueAt("Test 1: "+ fila, fila, 2);
-            model.setValueAt("Test 1: "+ fila, fila, 3);
-            model.setValueAt("Test 1: "+ fila, fila, 4);
-            model.setValueAt("Test 1: "+ fila, fila, 5);
-            model.setValueAt("Test 1: "+ fila, fila, 6);
-            model.setValueAt("Test 1: "+ fila, fila, 7);
+            model.setValueAt(p.getNombre(), fila, 0);
+            model.setValueAt(p.getOcupacion(), fila, 1);
+            model.setValueAt(p.getLibres(), fila, 2);
+            model.setValueAt(p.getEstadoTendencia(), fila, 3);
+            model.setValueAt(p.getFactorDemanda(), fila, 4);
+            model.setValueAt(p.getCantidadEstadias(), fila, 5);
+            model.setValueAt(p.getSubTotalCobradoMulta(), fila, 6);
+            model.setValueAt(p.GetSubTotalParking(), fila, 7);
             fila++;
         }
         

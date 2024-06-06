@@ -42,11 +42,11 @@ public class Multa {
     public void setMonto(float monto) {
         this.monto = monto;
     }
-    private float montoExtra(float montoEstadia, float duracion){
-        return etiqueta.montoASumarMulta(montoEstadia,duracion);
+    private float montoExtra(){
+        return etiqueta.montoASumarMulta(this.estadia.getFacturado(),this.estadia.getDuracion());
     }
     
-    public float getMontoTotalMulta(float montoEstadia, float duracion){
-        return getMonto() + montoExtra(montoEstadia,montoEstadia);
+    public float getMontoTotalMulta(){
+        return montoExtra();
     }
 }
