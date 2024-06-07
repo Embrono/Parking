@@ -5,6 +5,7 @@
 package parkingsystem.Entidad;
 
 import java.util.ArrayList;
+import observador.Observable;
 import parkingsystem.Fachada;
 import simuladortransito.Estacionable;
 import simuladortransito.Sensor;
@@ -14,7 +15,7 @@ import simuladortransito.Transitable;
  *
  * @author Embrono
  */
-public class Parking{
+public class Parking extends Observable {
     
     private String nombre;
     private String direccion;

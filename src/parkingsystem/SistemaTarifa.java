@@ -25,6 +25,7 @@ public class SistemaTarifa {
     
     public void setPrecioTarifa(Tarifa t, float precio) throws TarifaExcepcion{
         t.setPrecio(precio);
+        t.getParking().avisar(eventos.CAMBIO_DE_TARIFA);
         Fachada.getInstancia().avisar(eventos.CAMBIO_DE_TARIFA);
     }
 }

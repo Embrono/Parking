@@ -55,6 +55,8 @@ public class SistemaEstadia {
         v.setEstacionado(true);
         c.setOcupada(true);
         Fachada.getInstancia().avisar(eventos.INGRESO);
+        c.getParking().avisar(eventos.INGRESO);
+
         Date fecha = new Date();
         Estadia estadiaAnterior;
 
@@ -87,6 +89,7 @@ public class SistemaEstadia {
         v.setEstacionado(false);
         c.setOcupada(false);
         Fachada.getInstancia().avisar(eventos.EGRESO);
+        c.getParking().avisar(eventos.EGRESO);
         try {
             Estadia estadia = c.buscarEstadiaActiva(v.getPatente());
 

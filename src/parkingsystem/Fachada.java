@@ -6,6 +6,7 @@ package parkingsystem;
 
 import Excepciones.TarifaExcepcion;
 import java.util.ArrayList;
+import observador.IObservador;
 import observador.Observable;
 import parkingsystem.Entidad.Anomalia;
 import parkingsystem.Entidad.Cochera;
@@ -23,7 +24,7 @@ import simuladortransito.Transitable;
  *
  * @author facun
  */
-public class Fachada extends Observable implements Sensor{
+public class Fachada extends Observable implements Sensor, IObservador{
     private SistemaEstadia sistemaEstadia = SistemaEstadia.getInstancia();
     private SistemaParking sistemaParking = SistemaParking.getInstancia();  
     private SistemaEtiquetas sistemaEtiquetas = SistemaEtiquetas.getInstancia();
@@ -81,4 +82,10 @@ public class Fachada extends Observable implements Sensor{
     public ArrayList<Etiqueta> getEtiquetas(){
        return sistemaEtiquetas.getEtiquetas();
     } 
+
+    @Override
+    public void actualizar(Object evento, Observable origen) {
+        this.avisar(evento);
+    }
+    
 }

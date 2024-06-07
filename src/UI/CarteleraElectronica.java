@@ -27,8 +27,10 @@ public class CarteleraElectronica extends javax.swing.JDialog implements IObserv
     public CarteleraElectronica(java.awt.Frame parent, boolean modal, Parking p) {
         super(parent, modal);
         parking = p;
-        Fachada.getInstancia().agregarObservador(this);
+        //Fachada.getInstancia().agregarObservador(this);
+        parking.agregarObservador(this);
         initComponents();
+        this.setTitle(this.getTitle() + "-" + parking.getNombre());
         DibujarTarifas();
         DibujarDisponibilidad();
 
@@ -145,13 +147,15 @@ public class CarteleraElectronica extends javax.swing.JDialog implements IObserv
 
     private void jButtonCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCerrarMouseClicked
         // TODO add your handling code here:
-        Fachada.getInstancia().quitarObservador(this);
+        //Fachada.getInstancia().quitarObservador(this);
+        parking.quitarObservador(this);
         this.dispose();
     }//GEN-LAST:event_jButtonCerrarMouseClicked
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
-        Fachada.getInstancia().quitarObservador(this);
+        //Fachada.getInstancia().quitarObservador(this);
+        parking.quitarObservador(this);
         this.dispose();
     }//GEN-LAST:event_formWindowClosing
 
@@ -196,9 +200,9 @@ public class CarteleraElectronica extends javax.swing.JDialog implements IObserv
 
     @Override
     public void actualizar(Object evento, Observable origen) {
-        if (evento.equals(eventos.CAMBIO_DE_TARIFA)) {
+        if (evento.equals(eventos.CAMBIO_DE_TARIFA) && origen.equals(parking)) {
             DibujarTarifas();
-        } else if (evento.equals(eventos.EGRESO) || evento.equals(eventos.INGRESO)) {
+        } else if ((evento.equals(eventos.EGRESO) || evento.equals(eventos.INGRESO)) && origen.equals(parking)) {
             DibujarDisponibilidad();
         }
     }
