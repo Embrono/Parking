@@ -55,5 +55,9 @@ public class SistemaAnomalia {
         this.anomalias.add(anomalia);
         Fachada.getInstancia().avisar(eventos.ANOMALIAS);
     }
+
+    void registrarAnomaliaHudini(Estadia estadia) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
 }

@@ -2,18 +2,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package parkingsystem.Entidad;
+package parkingsystem.Entidad.TipoVehiculos;
 
 import java.util.ArrayList;
+import parkingsystem.Entidad.Tarifa;
+import parkingsystem.Entidad.Vehiculo;
 
 /**
  *
  * @author Embrono
  */
-public class TipoVehiculo {
-    private Vehiculo tipo;
-    private ArrayList<Vehiculo> vehiculos;
-    private ArrayList<Tarifa> tarifas;
+public abstract class TipoVehiculo {
+    private ArrayList<Vehiculo> vehiculos = new ArrayList<>();
+    private ArrayList<Tarifa> tarifas = new ArrayList<>();
 
     public ArrayList<Vehiculo> getVehiculos() {
         return vehiculos;
@@ -31,11 +32,4 @@ public class TipoVehiculo {
         this.tarifas = tarifas;
     }
 
-    public Vehiculo getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(Vehiculo tipo) {
-        this.tipo = tipo;
-    }
 }

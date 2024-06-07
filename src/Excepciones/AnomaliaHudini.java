@@ -6,6 +6,7 @@ package Excepciones;
 
 import java.util.Date;
 import parkingsystem.Entidad.Estadia;
+import parkingsystem.Fachada;
 
 /**
  *
@@ -24,7 +25,7 @@ public class AnomaliaHudini extends AnomaliaException {
 
     @Override
     public void generarAnomalia() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Fachada.getInstancia().registrarAnomaliaHudini(this.getEstadia());
     }
     
 }

@@ -4,6 +4,7 @@
  */
 package parkingsystem;
 
+import Excepciones.TarifaExcepcion;
 import java.util.ArrayList;
 import observador.Observable;
 import parkingsystem.Entidad.Anomalia;
@@ -11,6 +12,7 @@ import parkingsystem.Entidad.Cochera;
 import parkingsystem.Entidad.Estadia;
 import parkingsystem.Entidad.Etiqueta;
 import parkingsystem.Entidad.Parking;
+import parkingsystem.Entidad.Tarifa;
 import parkingsystem.Entidad.Vehiculo;
 import parkingsystem.Entidad.eventos;
 import simuladortransito.Estacionable;
@@ -26,6 +28,8 @@ public class Fachada extends Observable implements Sensor{
     private SistemaParking sistemaParking = SistemaParking.getInstancia();  
     private SistemaEtiquetas sistemaEtiquetas = SistemaEtiquetas.getInstancia();
     private SistemaAnomalia sistemaAnomalia = SistemaAnomalia.getInstancia();
+    private SistemaTarifa sistemaTarifa = SistemaTarifa.getInstancia();
+
 
         
     private static Fachada instancia = new Fachada();
@@ -65,4 +69,16 @@ public class Fachada extends Observable implements Sensor{
     public ArrayList<Anomalia> getAnomalias() {
         return sistemaAnomalia.getAnomalias();
     }
+
+    public void registrarAnomaliaHudini(Estadia estadia) {
+        sistemaAnomalia.registrarAnomaliaHudini(estadia);
+    }
+    
+    public void setPrecioTarifa(Tarifa t, float precio) throws TarifaExcepcion{
+        sistemaTarifa.setPrecioTarifa(t, precio);
+    }
+    
+    public ArrayList<Etiqueta> getEtiquetas(){
+       return sistemaEtiquetas.getEtiquetas();
+    } 
 }

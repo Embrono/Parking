@@ -2,12 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package parkingsystem.Entidad;
+package parkingsystem.Entidad.TipoVehiculos;
+
+import parkingsystem.Entidad.TipoVehiculos.TipoVehiculo;
 
 /**
  *
  * @author Embrono
  */
-public class Pasajeros extends Vehiculo {
-    
+public class Standard extends TipoVehiculo{
+
+    @Override
+    public String toString() {
+        return "Standard";
+    }
 }

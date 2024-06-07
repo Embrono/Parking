@@ -4,23 +4,37 @@
  */
 package UI;
 
+import Excepciones.TarifaExcepcion;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import observador.IObservador;
 import observador.Observable;
+import parkingsystem.Entidad.Parking;
+import parkingsystem.Entidad.Tarifa;
+import parkingsystem.Entidad.eventos;
 import parkingsystem.Fachada;
 
 /**
  *
  * @author Embrono
  */
-public class ListaDePrecio extends javax.swing.JDialog implements IObservador{
+public class ListaDePrecio extends javax.swing.JDialog implements IObservador {
 
     /**
      * Creates new form ListaDePrecio
      */
-    public ListaDePrecio(java.awt.Frame parent, boolean modal) {
+    private Parking parking;
+
+    public ListaDePrecio(java.awt.Frame parent, boolean modal, Parking p) {
         super(parent, modal);
         Fachada.getInstancia().agregarObservador(this);
+        parking = p;
         initComponents();
+        this.setTitle(this.getTitle() + "-" + parking.getNombre());
+        DibujarTarifas();
     }
 
     /**
@@ -47,22 +61,16 @@ public class ListaDePrecio extends javax.swing.JDialog implements IObservador{
             }
         });
 
-        jTableListado.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "Tipo de Vehiculo", "Precio/<UT>"
+        jTableListado.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableListadoMouseClicked(evt);
             }
-        ));
+        });
         jScrollPane1.setViewportView(jTableListado);
 
         jLabelNuevoValor.setText("Nuevo valor");
 
-        jTextFieldNuevoValor.setText("jTextField1");
+        jTextFieldNuevoValor.setText("0");
 
         jButtonCerrar.setText("Cerrar");
         jButtonCerrar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -72,6 +80,11 @@ public class ListaDePrecio extends javax.swing.JDialog implements IObservador{
         });
 
         jButtonGuardar.setText("Guardar");
+        jButtonGuardar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonGuardarMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -128,6 +141,37 @@ public class ListaDePrecio extends javax.swing.JDialog implements IObservador{
         this.dispose();
     }//GEN-LAST:event_formWindowClosing
 
+    private void jTableListadoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableListadoMouseClicked
+        // TODO add your handling code here:
+        int selection = jTableListado.getSelectedRow();
+        if (selection == -1) {
+            return;
+        }
+        var tarifa = this.parking.getTarifas().get(selection);
+        jTextFieldNuevoValor.setText(String.valueOf(Math.round(tarifa.getPrecio() * 100.0) / 100.0));
+    }//GEN-LAST:event_jTableListadoMouseClicked
+
+    private void jButtonGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonGuardarMouseClicked
+        // TODO add your handling code here:
+        int selection = jTableListado.getSelectedRow();
+        if (selection == -1) {
+            return;
+        }
+        var tarifa = this.parking.getTarifas().get(selection);
+        float nuevoPrecio = 0;
+        try {
+            nuevoPrecio = Float.parseFloat(jTextFieldNuevoValor.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Ingrese un numero", "Error al cambiar precio", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        try {
+            Fachada.getInstancia().setPrecioTarifa(tarifa, nuevoPrecio);
+        } catch (TarifaExcepcion ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error al cambiar precio", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonGuardarMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -154,20 +198,6 @@ public class ListaDePrecio extends javax.swing.JDialog implements IObservador{
             java.util.logging.Logger.getLogger(ListaDePrecio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                ListaDePrecio dialog = new ListaDePrecio(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -181,6 +211,24 @@ public class ListaDePrecio extends javax.swing.JDialog implements IObservador{
 
     @Override
     public void actualizar(Object evento, Observable origen) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (evento.equals(eventos.CAMBIO_DE_TARIFA)) {
+            DibujarTarifas();
+        }
+    }
+
+    private void DibujarTarifas() {
+        ArrayList<Tarifa> tarifario = parking.getTarifas();
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Tipo de Vehiculo");
+        model.addColumn("Precio/<UT>");
+        model.setRowCount(tarifario.size());
+
+        int fila = 0;
+        for (Tarifa a : tarifario) {
+            model.setValueAt(a.getTipo().toString(), fila, 0);
+            model.setValueAt(Math.round(a.getPrecio() * 100.0) / 100.0, fila, 1);
+            fila++;
+        }
+        jTableListado.setModel(model);
     }
 }

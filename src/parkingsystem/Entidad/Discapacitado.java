@@ -9,6 +9,11 @@ package parkingsystem.Entidad;
  * @author Embrono
  */
 public class Discapacitado extends Etiqueta {
+
+    @Override
+    public String toString() {
+        return "Discapacitado";
+    }
     
        @Override
     public boolean esDiscapacitado() {

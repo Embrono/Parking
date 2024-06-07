@@ -36,6 +36,9 @@ public class ParkingSystem {
     public static void main(String[] args) {
         // TODO code application logic here
         PreCarga pre = new PreCarga();
+        pre.inicio();
+        SistemaEtiquetas se = SistemaEtiquetas.getInstancia();
+        se.setEtiquetas(pre.getEtiquetas());
         Parking p1 = pre.generarParking("Andres", "Salto y contituyente");
         Parking p2 = pre.generarParking("Facundo", "Salto y contituyente");
         ArrayList<Propietario> prop = pre.generarPropietarios();
@@ -58,9 +61,9 @@ public class ParkingSystem {
         simulador.addEstacionables(estacionables);
         
         // se programa un flujo de ingreso inicial para simular el ingreso de vehículos al sistema
-        var flujoingreso = new FlujoIngreso("Ingreso Inicial", new Periodo(0, 5),3);
+        //var flujoingreso = new FlujoIngreso("Ingreso Inicial", new Periodo(0, 5),3);
         try {
-            simulador.programar(flujoingreso);
+            //simulador.programar(flujoingreso);
             simulador.iniciar(fachada);
         } catch (ConfiguracionException ex) {
             Logger.getLogger(ParkingSystem.class.getName()).log(Level.SEVERE, null, ex);

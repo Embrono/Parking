@@ -2,14 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package parkingsystem.Entidad;
+package Excepciones;
 
 /**
  *
- * @author Embrono
+ * @author alope
  */
-public class Motocicleta extends Vehiculo  {
+public class TarifaExcepcion extends Exception {
 
-    
+    public TarifaExcepcion(String message) {
+        super(message);
+    }
     
 }

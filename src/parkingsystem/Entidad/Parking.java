@@ -43,7 +43,7 @@ public class Parking{
 
     @Override
     public String toString() {
-        return "Parking{" + "nombre=" + nombre + '}';
+        return "Parking" + nombre;
     }
     
     public ArrayList<Cochera> getCocheras() {
@@ -159,6 +159,17 @@ public class Parking{
             total+= e.getTotal();
         }
         return total;
+    }
+
+    public Tarifa getTarifaFor(Vehiculo vehiculo) {
+        
+        for(Tarifa t: Tarifas){
+            if(t.getTipo().equals(vehiculo.getTipo()))
+            {
+                return t;
+            }
+        }
+        return null;
     }
     
 }

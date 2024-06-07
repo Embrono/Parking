@@ -31,7 +31,11 @@ public class Cochera implements Estacionable {
 
     @Override
     public String toString() {
-        return "Cochera{" + "id=" + id + ", parking=" + parking.toString() + '}';
+        String eti = "";
+        for(var e: etiquetas){
+            eti += e.toString() +",";
+        }
+        return "Numero:" + id + "," + parking.toString() + "Eti:"+eti;
     }
 
     public int getId() {
@@ -130,4 +134,5 @@ public class Cochera implements Estacionable {
         }
         return null;
     }
+    
 }

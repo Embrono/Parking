@@ -10,8 +10,10 @@ package parkingsystem.Entidad;
  */
 public class Empleado extends Etiqueta{
 
-
-
+    @Override
+    public String toString() {
+        return "Empleado";
+    }
     @Override
     public boolean esDiscapacitado() {
         return false;

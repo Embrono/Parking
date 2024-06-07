@@ -9,6 +9,11 @@ package parkingsystem.Entidad;
  * @author Embrono
  */
 public class Electrico extends Etiqueta{
+
+    @Override
+    public String toString() {
+        return "Electrico";
+    }
     
     public Electrico( ) {
         super();

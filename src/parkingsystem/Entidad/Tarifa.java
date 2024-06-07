@@ -4,16 +4,19 @@
  */
 package parkingsystem.Entidad;
 
+import Excepciones.TarifaExcepcion;
+import parkingsystem.Entidad.TipoVehiculos.TipoVehiculo;
+
 /**
  *
  * @author Embrono
  */
 public class Tarifa {
-    
+
     private int tiempo = 1;
-    private double precio;
-    private Vehiculo tipo;
-    private Parking parking; 
+    private float precio;
+    private TipoVehiculo tipo;
+    private Parking parking;
 
     public Tarifa(Parking p) {
         parking = p;
@@ -23,23 +26,24 @@ public class Tarifa {
         return precio;
     }
 
-    public void setPrecio(double precio) {
+    public void setPrecio(float precio) throws TarifaExcepcion {
+        validarPrecio(precio);
         this.precio = precio;
     }
 
-    public Vehiculo getTipo() {
+    public TipoVehiculo getTipo() {
         return tipo;
     }
 
-    public void setTipo(Vehiculo tipo) {
+    public void setTipo(TipoVehiculo tipo) {
         this.tipo = tipo;
     }
 
-    public Vehiculo getVehiculo() {
+    public TipoVehiculo getVehiculo() {
         return tipo;
     }
 
-    public void setVehiculo(Vehiculo vehiculo) {
+    public void setVehiculo(TipoVehiculo vehiculo) {
         this.tipo = vehiculo;
     }
 
@@ -50,14 +54,13 @@ public class Tarifa {
     public void setParking(Parking parking) {
         this.parking = parking;
     }
-    
-    public double getPrecioBase(Vehiculo vehiculo) {
-        if (vehiculo instanceof Motocicleta) {
-            return 0.05;
-        } else if (vehiculo instanceof Standard || vehiculo instanceof Carga || vehiculo instanceof Pasajeros) {
-            return 0.1;
-        } else {
-            throw new IllegalArgumentException("Tipo de vehículo desconocido: " + vehiculo.getTipo());
+
+    private void validarPrecio(float precioNuevo) throws TarifaExcepcion {
+        if(precioNuevo < 0){
+            throw new TarifaExcepcion("El precio debe ser mayor o igual a 0");
+        }
+        if(precioNuevo >= this.precio * 2 && this.precio != 0){
+            throw new TarifaExcepcion("Valor demasiado alto. Elsistema no permite dispersión de precios por encima del 100%. Ingrese un valor menor a" + this.precio *2+ ".");
         }
     }
 }

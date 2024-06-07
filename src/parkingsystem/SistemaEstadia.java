@@ -27,8 +27,9 @@ import simuladortransito.Transitable;
  * @author facun
  */
 public class SistemaEstadia {
+
     ArrayList<Estadia> estadias;
-    
+
     private static SistemaEstadia instancia;
 
     private SistemaEstadia() {
@@ -49,14 +50,14 @@ public class SistemaEstadia {
         }
         return instancia;
     }
-    
-    public void agregarEstadia(Vehiculo v, Cochera c){
+
+    public void agregarEstadia(Vehiculo v, Cochera c) {
         v.setEstacionado(true);
-        c.setOcupada(true); 
+        c.setOcupada(true);
         Fachada.getInstancia().avisar(eventos.INGRESO);
         Date fecha = new Date();
         Estadia estadiaAnterior;
-        
+
         if (c.isOcupada()) {
             estadiaAnterior = c.buscarUltimaEstadia();
             if (estadiaAnterior != null) {
@@ -66,7 +67,7 @@ public class SistemaEstadia {
                 estadiaAnterior.setAnomalia(nuevaAnomalia);
             }
         }
-        
+
         // Crear una nueva estadía
         Estadia nuevaEstadia = new Estadia(fecha, c, v);
 
@@ -79,23 +80,22 @@ public class SistemaEstadia {
 
         // Actualizar el factor de demanda del parking
         Parking parking = c.getParking();
-        parking.actualizarFactorDemanda(1); 
+        parking.actualizarFactorDemanda(1);
     }
-    
-    public void egresarEstadia(Vehiculo v, Cochera c){
+
+    public void egresarEstadia(Vehiculo v, Cochera c) {
         v.setEstacionado(false);
         c.setOcupada(false);
         Fachada.getInstancia().avisar(eventos.EGRESO);
-        try{
+        try {
             Estadia estadia = c.buscarEstadiaActiva(v.getPatente());
 
-         if (!c.isOcupada()){
-             
-             throw new AnomaliaMistery(estadia, new Date());
-         }
-        if (estadia == null) {
-             throw new AnomaliaTransportador(estadia, new Date());
-        }
+            if (!c.isOcupada()) {
+                throw new AnomaliaMistery(estadia, new Date());
+            }
+            if (estadia == null) {
+                throw new AnomaliaTransportador(estadia, new Date());
+            }
             // Finalizar la estadía
             finalizarEstadia(estadia);
 
@@ -104,21 +104,20 @@ public class SistemaEstadia {
             double montoEstadia = estadia.getFacturado();
             propietario.descontarSaldo(montoEstadia);
             c.setOcupada(false);
-        
-        }catch(AnomaliaException e){
+
+        } catch (AnomaliaException e) {
             e.generarAnomalia();
         }
     }
-        
+
     public void finalizarEstadia(Estadia e) {
         Date fechaSalida = new Date();
         e.setFechaSalida(fechaSalida);
 
         long duracionUT = (fechaSalida.getTime() - e.getFechaEntrada().getTime()) / 1000;
-
         Parking parking = e.getCochera().getParking();
-        Tarifa tarifario = new Tarifa(parking);
-        float pb = (float) tarifario.getPrecioBase(e.getVehiculo());
+        Tarifa tarifario = parking.getTarifaFor(e.getVehiculo());
+        float pb = (float) tarifario.getPrecio();
         float fd = parking.getFactorDemanda();
 
         float montoEstadia = pb * duracionUT * fd;
@@ -132,16 +131,15 @@ public class SistemaEstadia {
     }
 
     void egresarEstadia(Transitable transitable, Estacionable estacionable) {
-        Vehiculo v = (Vehiculo)transitable;
+        Vehiculo v = (Vehiculo) transitable;
         Cochera c = (Cochera) estacionable;
-        this.egresarEstadia(v, c );
+        this.egresarEstadia(v, c);
     }
 
     void agregarEstadia(Transitable transitable, Estacionable estacionable) {
-        Vehiculo v = (Vehiculo)transitable;
+        Vehiculo v = (Vehiculo) transitable;
         Cochera c = (Cochera) estacionable;
-        this.agregarEstadia(v, c );
+        this.agregarEstadia(v, c);
     }
-    
 
 }

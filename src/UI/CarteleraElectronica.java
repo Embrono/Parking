@@ -4,8 +4,13 @@
  */
 package UI;
 
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
 import observador.IObservador;
 import observador.Observable;
+import parkingsystem.Entidad.Parking;
+import parkingsystem.Entidad.Tarifa;
+import parkingsystem.Entidad.eventos;
 import parkingsystem.Fachada;
 
 /**
@@ -17,10 +22,16 @@ public class CarteleraElectronica extends javax.swing.JDialog implements IObserv
     /**
      * Creates new form CarteleraElectronica
      */
-    public CarteleraElectronica(java.awt.Frame parent, boolean modal) {
+    private Parking parking;
+
+    public CarteleraElectronica(java.awt.Frame parent, boolean modal, Parking p) {
         super(parent, modal);
+        parking = p;
         Fachada.getInstancia().agregarObservador(this);
         initComponents();
+        DibujarTarifas();
+        DibujarDisponibilidad();
+
     }
 
     /**
@@ -38,7 +49,7 @@ public class CarteleraElectronica extends javax.swing.JDialog implements IObserv
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableDisponibilidad = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTableCartelera = new javax.swing.JTable();
+        jTableListado = new javax.swing.JTable();
         jButtonCerrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -53,32 +64,9 @@ public class CarteleraElectronica extends javax.swing.JDialog implements IObserv
 
         jLabelDisponibilidadValue.setText("jLabel1");
 
-        jTableDisponibilidad.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "Cocheras", "Disponibilidad"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
         jScrollPane1.setViewportView(jTableDisponibilidad);
-        if (jTableDisponibilidad.getColumnModel().getColumnCount() > 0) {
-            jTableDisponibilidad.getColumnModel().getColumn(0).setResizable(false);
-            jTableDisponibilidad.getColumnModel().getColumn(1).setResizable(false);
-        }
 
-        jTableCartelera.setModel(new javax.swing.table.DefaultTableModel(
+        jTableListado.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
                 {null, null},
@@ -97,10 +85,10 @@ public class CarteleraElectronica extends javax.swing.JDialog implements IObserv
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTableCartelera);
-        if (jTableCartelera.getColumnModel().getColumnCount() > 0) {
-            jTableCartelera.getColumnModel().getColumn(0).setResizable(false);
-            jTableCartelera.getColumnModel().getColumn(1).setResizable(false);
+        jScrollPane2.setViewportView(jTableListado);
+        if (jTableListado.getColumnModel().getColumnCount() > 0) {
+            jTableListado.getColumnModel().getColumn(0).setResizable(false);
+            jTableListado.getColumnModel().getColumn(1).setResizable(false);
         }
 
         jButtonCerrar.setText("Cerrar");
@@ -193,20 +181,6 @@ public class CarteleraElectronica extends javax.swing.JDialog implements IObserv
             java.util.logging.Logger.getLogger(CarteleraElectronica.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                CarteleraElectronica dialog = new CarteleraElectronica(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -216,12 +190,67 @@ public class CarteleraElectronica extends javax.swing.JDialog implements IObserv
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTableCartelera;
     private javax.swing.JTable jTableDisponibilidad;
+    private javax.swing.JTable jTableListado;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void actualizar(Object evento, Observable origen) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (evento.equals(eventos.CAMBIO_DE_TARIFA)) {
+            DibujarTarifas();
+        } else if (evento.equals(eventos.EGRESO) || evento.equals(eventos.INGRESO)) {
+            DibujarDisponibilidad();
+        }
+    }
+
+    private void DibujarTarifas() {
+        ArrayList<Tarifa> tarifario = parking.getTarifas();
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Tipo de Vehiculo");
+        model.addColumn("Precio/<UT>");
+        model.setRowCount(tarifario.size());
+
+        int fila = 0;
+        for (Tarifa a : tarifario) {
+            model.setValueAt(a.getTipo().toString(), fila, 0);
+            model.setValueAt(Math.round(a.getPrecio() * 100.0) / 100.0, fila, 1);
+            fila++;
+        }
+        jTableListado.setModel(model);
+    }
+
+    private void DibujarDisponibilidad() {
+        DibujarTablaDisponibilidad();
+        MostrarDisponibilidad();
+
+    }
+
+    private void DibujarTablaDisponibilidad() {
+        var cocheras = parking.getCocheras();
+        var etiquetas = Fachada.getInstancia().getEtiquetas();
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Cocheras");
+        model.addColumn("Disponibilidad");
+        for (var etiqueta : etiquetas) {
+            int disponibilidad = 0;
+
+            // Contar cuántas cocheras con esta etiqueta están vacías
+            for (var cochera : cocheras) {
+                if (cochera.getEtiquetas().contains(etiqueta) && !cochera.isOcupada()) {
+                    disponibilidad++;
+                }
+            }
+            model.addRow(new Object[]{etiqueta.toString(), disponibilidad});
+        }
+
+        // Establecer el modelo en la JTable
+        jTableDisponibilidad.setModel(model);
+    }
+
+    private void MostrarDisponibilidad() {
+        var cocherasDisponibles = parking.getCocheras().stream()
+                .filter(c -> !c.isOcupada())
+                .count();
+        jLabelDisponibilidadValue.setText(String.valueOf(cocherasDisponibles));
     }
 }

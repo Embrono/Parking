@@ -4,6 +4,7 @@
  */
 package parkingsystem.Entidad;
 
+import parkingsystem.Entidad.TipoVehiculos.TipoVehiculo;
 import java.util.ArrayList;
 import parkingsystem.Fachada;
 import simuladortransito.Transitable;
@@ -12,16 +13,15 @@ import simuladortransito.Transitable;
  *
  * @author Embrono
  */
-public abstract class Vehiculo implements Transitable  {
+public class Vehiculo implements Transitable  {
     private String patente;
-    private ArrayList<Estadia> estadias;
-    private ArrayList<Etiqueta> etiquetas;
+    private ArrayList<Estadia> estadias = new ArrayList<>();
+    private ArrayList<Etiqueta> etiquetas = new ArrayList<>();
     private Propietario propietario;
-    private TipoVehiculo tipo;
     private boolean estacionado;
     private static int id = 0;
     private Anomalia anomalia;
-    
+    private TipoVehiculo tipo;
     public ArrayList<Estadia> getEstadias() {
         return estadias;
     }
@@ -54,14 +54,6 @@ public abstract class Vehiculo implements Transitable  {
         this.propietario = propietario;
     }
 
-    public TipoVehiculo getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(TipoVehiculo tipo) {
-        this.tipo = tipo;
-    }
-    
     public Anomalia getAnomalia() {
         return anomalia;
     }
@@ -116,8 +108,21 @@ public abstract class Vehiculo implements Transitable  {
 
     @Override
     public String toString() {
-        return "Vehiculo{" + "patente=" + patente + ", propietario=" + propietario.getNombreCompleto() + '}';
+        String eti = "";
+        for(var e: etiquetas){
+            eti += e.toString() +",";
+        }
+        return "Tipo:"+ tipo.toString() + ", Pa:" + patente + ", Pro:" + propietario.getNombreCompleto() + ", Eti:"+ eti;
     }
+
+    public TipoVehiculo getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoVehiculo tipo) {
+        this.tipo = tipo;
+    }
+
     
     
 

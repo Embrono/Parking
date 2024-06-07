@@ -4,24 +4,27 @@
  */
 package Precarga;
 
+import Excepciones.TarifaExcepcion;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
-import parkingsystem.Entidad.Carga;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import parkingsystem.Entidad.TipoVehiculos.Carga;
 import parkingsystem.Entidad.Cochera;
 import parkingsystem.Entidad.Discapacitado;
 import parkingsystem.Entidad.Electrico;
 import parkingsystem.Entidad.Empleado;
 import parkingsystem.Entidad.Etiqueta;
-import parkingsystem.Entidad.Motocicleta;
+import parkingsystem.Entidad.TipoVehiculos.Motocicleta;
 import parkingsystem.Entidad.Pago;
 import parkingsystem.Entidad.Parking;
-import parkingsystem.Entidad.Pasajeros;
+import parkingsystem.Entidad.TipoVehiculos.Pasajeros;
 import parkingsystem.Entidad.Propietario;
-import parkingsystem.Entidad.Standard;
+import parkingsystem.Entidad.TipoVehiculos.Standard;
 import parkingsystem.Entidad.Tarifa;
-import parkingsystem.Entidad.TipoVehiculo;
+import parkingsystem.Entidad.TipoVehiculos.TipoVehiculo;
 import parkingsystem.Entidad.Vehiculo;
 import parkingsystem.SistemaEtiquetas;
 
@@ -30,51 +33,62 @@ import parkingsystem.SistemaEtiquetas;
  * @author Embrono
  */
 public class PreCarga {
-    public static ArrayList<Etiqueta> etiquetas = new ArrayList<>(Arrays.asList(
-        
-    ));
-    public Parking generarParking(String nombre, String direccion){
+
+    public static ArrayList<Etiqueta> etiquetas = new ArrayList<>();
+    public static ArrayList<TipoVehiculo> tiposVe = new ArrayList<>();
+
+    public Parking generarParking(String nombre, String direccion) {
         var aux = new Parking(nombre, direccion);
         aux.setCocheras(generarChocherasPrecarga(aux));
         aux.setTarifas(generarTarigasPrecarga(aux));
-        return aux;  
+        return aux;
     }
-    
-    public void inicio(){
+
+    public void inicio() {
         var dis = new Discapacitado();
         var emp = new Empleado();
         var ele = new Electrico();
-        etiquetas.add(ele); 
+        etiquetas.add(ele);
         etiquetas.add(dis);
         etiquetas.add(emp);
-
+        var carga = new Carga();
+        var moto = new Motocicleta();
+        var standar = new Standard();
+        var pasajero = new Pasajeros();
+        tiposVe.add(carga);
+        tiposVe.add(standar);
+        tiposVe.add(pasajero);
+        tiposVe.add(moto);
     }
-    public ArrayList<Cochera> generarChocherasPrecarga(Parking p){
+
+    public ArrayList<Cochera> generarChocherasPrecarga(Parking p) {
         var cocheras = new ArrayList<Cochera>();
         var cantidad = new Random();
-        int aux = cantidad.nextInt(50,101);
-        for(int i = 0; i < aux; i++){
+        int aux = cantidad.nextInt(50, 101);
+        for (int i = 0; i < aux; i++) {
             var cochera = new Cochera(p);
             cochera.setEtiquetas(generarEtiquetas());
             p.getCocheras().add(cochera);
             cocheras.add(cochera);
         }
-        
+
         return cocheras;
     }
-    
-    private ArrayList<Vehiculo> generarVehiculoPrecarga(Propietario propietario){
+
+    private ArrayList<Vehiculo> generarVehiculoPrecarga(Propietario propietario) {
         var cocheras = new ArrayList<Vehiculo>();
         var cantidad = new Random();
-        int aux = cantidad.nextInt(50,101);
-        for(int i = 0; i < aux; i++){
-            Vehiculo ve = generarVehiculo();
+        int aux = cantidad.nextInt(50, 101);
+        for (int i = 0; i < aux; i++) {
+            Vehiculo ve = new Vehiculo();
             ve.setEtiquetas(generarEtiquetas());
-            ve.setTipo(generarTipoVehiculo());
+            TipoVehiculo tipo = generarVehiculo();
+            ve.setTipo(tipo);
             ve.setPropietario(propietario);
+            tipo.getVehiculos().add(ve);
             cocheras.add(ve);
         }
-        
+
         return cocheras;
     }
 
@@ -87,11 +101,7 @@ public class PreCarga {
         return etiquetasSeleccionadas;
     }
 
-    public TipoVehiculo generarTipoVehiculo() {
-        return new TipoVehiculo();
-    }
-    
-    public ArrayList<Propietario> generarPropietarios(){
+    public ArrayList<Propietario> generarPropietarios() {
         Random rnd = new Random();
         ArrayList<Propietario> propietarios = new ArrayList<>();
         ArrayList<String> nombres = new ArrayList<>();
@@ -101,13 +111,13 @@ public class PreCarga {
 
         for (int i = 1; i <= 50; i++) {
             String documento = "DOC" + i;
-            String nombreCompleto =  nombres.get(i%nombres.size());
+            String nombreCompleto = nombres.get(i % nombres.size());
             Propietario propietario = new Propietario(documento, nombreCompleto);
-            propietario.agregarPago(new Pago(rnd.nextFloat(10, 101),propietario));
+            propietario.agregarPago(new Pago(rnd.nextFloat(10, 101), propietario));
             var aux = generarVehiculoPrecarga(propietario);
             propietario.setVehiculos(aux);
             propietarios.add(propietario);
-            
+
         }
         return propietarios;
     }
@@ -118,34 +128,44 @@ public class PreCarga {
         Tarifa t2 = new Tarifa(p);
         Tarifa t3 = new Tarifa(p);
         Tarifa t4 = new Tarifa(p);
-        tarifas.add(t4);       
+        tarifas.add(t4);
         tarifas.add(t3);
         tarifas.add(t2);
         tarifas.add(t1);
-        t4.setPrecio(0.1); 
-        t4.setVehiculo(new Carga());
-        t3.setPrecio(0.1);
-        t3.setVehiculo(new Standard());
-        t2.setPrecio(0.1);
-        t2.setVehiculo(new Pasajeros());
-        t1.setPrecio(0.05);
-        t1.setVehiculo(new Motocicleta());
+        try {
+            t4.setPrecio(0.1f);
+        } catch (TarifaExcepcion ex) {
+            Logger.getLogger(PreCarga.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        t4.setVehiculo(tiposVe.get(0));
+        try {
+            t3.setPrecio(0.1f);
+        } catch (TarifaExcepcion ex) {
+            Logger.getLogger(PreCarga.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        t3.setVehiculo(tiposVe.get(1));
+        try {
+            t2.setPrecio(0.1f);
+        } catch (TarifaExcepcion ex) {
+            Logger.getLogger(PreCarga.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        t2.setVehiculo(tiposVe.get(2));
+        try {
+            t1.setPrecio(0.05f);
+        } catch (TarifaExcepcion ex) {
+            Logger.getLogger(PreCarga.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        t1.setVehiculo(tiposVe.get(3));
 
         return tarifas;
     }
 
-    private Vehiculo generarVehiculo() {
-        int num = new Random().nextInt();
-         if(num % 7 == 0 ){
-             return new Carga();
-         }else if(num % 5 == 0){
-            return new Pasajeros();
-         }else if(num % 3 == 0){
-            return new Motocicleta();
-         }else{
-            return new Standard();
-         }
+    private TipoVehiculo generarVehiculo() {
+        int num = new Random().nextInt(tiposVe.size());
+        return tiposVe.get(num);
+    }
+    
+    public ArrayList<Etiqueta> getEtiquetas(){
+        return etiquetas;
     }
 }
-
-

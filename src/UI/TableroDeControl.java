@@ -5,6 +5,7 @@
 package UI;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import observador.IObservador;
 import observador.Observable;
@@ -23,6 +24,7 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador{
     /**
      * Creates new form TableroDeControl
      */
+    private ArrayList<Parking> parkings = Fachada.getInstancia().getParkings();
     public TableroDeControl() {
         initComponents();
         Fachada.getInstancia().agregarObservador(this);
@@ -74,34 +76,14 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador{
 
         jTableDashBoard.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "Parking", "# Ocupadas", "# Libres", "Estado", "Factor Demanda", "# Estadias", "Multas", "SubTotal"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
-            };
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
             }
-        });
+        ));
+        jTableDashBoard.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTableDashBoard);
-        if (jTableDashBoard.getColumnModel().getColumnCount() > 0) {
-            jTableDashBoard.getColumnModel().getColumn(0).setResizable(false);
-            jTableDashBoard.getColumnModel().getColumn(1).setResizable(false);
-            jTableDashBoard.getColumnModel().getColumn(2).setResizable(false);
-            jTableDashBoard.getColumnModel().getColumn(3).setResizable(false);
-            jTableDashBoard.getColumnModel().getColumn(4).setResizable(false);
-            jTableDashBoard.getColumnModel().getColumn(5).setResizable(false);
-            jTableDashBoard.getColumnModel().getColumn(6).setResizable(false);
-            jTableDashBoard.getColumnModel().getColumn(7).setResizable(false);
-        }
 
         jButtonCartelera.setText("Cartelera");
         jButtonCartelera.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -229,12 +211,22 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador{
 
     private void jButtonPreciosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonPreciosMouseClicked
         // TODO add your handling code here:
-        new ListaDePrecio(this, false).setVisible(true);
+        int selection = jTableDashBoard.getSelectedRow();
+        if(selection == -1){
+            JOptionPane.showMessageDialog(this, "No hay seleccion", "Lista de Precio", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        new ListaDePrecio(this, false,this.parkings.get(selection)).setVisible(true);
     }//GEN-LAST:event_jButtonPreciosMouseClicked
 
     private void jButtonCarteleraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCarteleraMouseClicked
         // TODO add your handling code here:
-        new CarteleraElectronica(this, false).setVisible(true);
+        int selection = jTableDashBoard.getSelectedRow();
+        if(selection == -1){
+            JOptionPane.showMessageDialog(this, "No hay seleccion", "Lista de Precio", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        new CarteleraElectronica(this, false,this.parkings.get(selection)).setVisible(true);
     }//GEN-LAST:event_jButtonCarteleraMouseClicked
 
     private void jButtonCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCerrarMouseClicked
@@ -276,13 +268,6 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador{
             java.util.logging.Logger.getLogger(TableroDeControl.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new TableroDeControl().setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -309,7 +294,7 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador{
             DibujarGridParking();
         }else if(evento.equals(eventos.EGRESO)){
             DibujarGridParking();
-        }else if(evento.equals(eventos.ANOMALIAS)){
+        }else if(evento.equals(eventos.ANOMALIAS) && jCheckBoxMonitor.isSelected()){
             DibujarGridAnomalia();
         }
     }
@@ -364,7 +349,7 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador{
         int fila = 0;
             for (Anomalia a : listaAnomalias) {
             model.setValueAt(a.getFechaHoraDeteccion(), fila, 0);
-            model.setValueAt("Propietario", fila, 1);
+            model.setValueAt(a.getEstadia().getVehiculo().toString(), fila, 1);
             model.setValueAt(a.getCodigoError(), fila, 2);
             model.setValueAt(a.getEstadia().getCochera().getId(), fila, 3);
             fila++;
