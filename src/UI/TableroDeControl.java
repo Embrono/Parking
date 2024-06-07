@@ -292,6 +292,7 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador{
     public void actualizar(Object evento, Observable origen) {
         if(evento.equals(eventos.INGRESO)){
             DibujarGridParking();
+            TotalEstadiasLabel();
         }else if(evento.equals(eventos.EGRESO)){
             DibujarGridParking();
         }else if(evento.equals(eventos.ANOMALIAS) && jCheckBoxMonitor.isSelected()){
@@ -355,5 +356,14 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador{
             fila++;
         }
         jTableAnomalias.setModel(model);
+    }
+
+    private void TotalEstadiasLabel() {
+        ArrayList<Parking> listaParkings = Fachada.getInstancia().getParkings();
+        int totalParking = 0;
+        for (Parking p : listaParkings) {
+            totalParking += p.getCantidadEstadias();
+        }
+        jLabelEstadiasValue.setText(totalParking + "");
     }
 }
