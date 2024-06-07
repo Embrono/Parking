@@ -9,6 +9,7 @@ import java.util.Date;
 import parkingsystem.Entidad.Anomalia;
 import parkingsystem.Entidad.Cochera;
 import parkingsystem.Entidad.Estadia;
+import parkingsystem.Entidad.Vehiculo;
 import parkingsystem.Entidad.eventos;
 
 /**
@@ -16,6 +17,7 @@ import parkingsystem.Entidad.eventos;
  * @author alope
  */
 public class SistemaAnomalia {
+
     private static SistemaAnomalia instancia;
     private ArrayList<Anomalia> anomalias;
 
@@ -25,21 +27,29 @@ public class SistemaAnomalia {
         }
         return instancia;
     }
-    
-        private SistemaAnomalia() {
+
+    private SistemaAnomalia() {
         this.anomalias = new ArrayList<Anomalia>();
     }
 
     public ArrayList<Anomalia> getAnomalias() {
         return anomalias;
     }
-    
-    public void registrarAnomaliaTransportador(Estadia estadia) {
+
+    public void registrarAnomaliaTransportador(Estadia estadia, Vehiculo v) {
         estadia.setMultas(new ArrayList<>());
         Anomalia anomaliaEstadia = new Anomalia(estadia, new Date(), "TRANSPORTADOR1");
         estadia.setAnomalia(anomaliaEstadia);
-        Anomalia anomaliaVehiculo = new Anomalia(null, new Date(), "TRANSPORTADOR2");
+        var fecha = new Date();
+        var es = new Estadia(fecha,estadia.getCochera(),v);
+        es.setFechaSalida(fecha);
+        es.setFacturado(0);
+        Anomalia anomaliaVehiculo = new Anomalia(es, new Date(), "TRANSPORTADOR2");
+        es.setVehiculo(v);
         estadia.getVehiculo().setAnomalia(anomaliaVehiculo);
+        estadia.setFacturado(0);
+        estadia.setFechaSalida(fecha);
+
         this.anomalias.add(anomaliaEstadia);
         this.anomalias.add(anomaliaVehiculo);
         Fachada.getInstancia().avisar(eventos.ANOMALIAS);
@@ -63,5 +73,5 @@ public class SistemaAnomalia {
         this.anomalias.add(anomalia);
         Fachada.getInstancia().avisar(eventos.ANOMALIAS);
     }
-    
+
 }

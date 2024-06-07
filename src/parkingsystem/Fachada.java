@@ -24,7 +24,7 @@ import simuladortransito.Transitable;
  *
  * @author facun
  */
-public class Fachada extends Observable implements Sensor, IObservador{
+public class Fachada extends Observable implements Sensor{
     private SistemaEstadia sistemaEstadia = SistemaEstadia.getInstancia();
     private SistemaParking sistemaParking = SistemaParking.getInstancia();  
     private SistemaEtiquetas sistemaEtiquetas = SistemaEtiquetas.getInstancia();
@@ -63,8 +63,8 @@ public class Fachada extends Observable implements Sensor, IObservador{
         sistemaAnomalia.registrarAnomaliaMistery(cochera);
     }
 
-    public void registrarAnomaliaTransportador(Estadia estadia) {
-        sistemaAnomalia.registrarAnomaliaTransportador(estadia);
+    public void registrarAnomaliaTransportador(Estadia estadia, Vehiculo v) {
+        sistemaAnomalia.registrarAnomaliaTransportador(estadia, v);
     }
 
     public ArrayList<Anomalia> getAnomalias() {
@@ -82,10 +82,4 @@ public class Fachada extends Observable implements Sensor, IObservador{
     public ArrayList<Etiqueta> getEtiquetas(){
        return sistemaEtiquetas.getEtiquetas();
     } 
-
-    @Override
-    public void actualizar(Object evento, Observable origen) {
-        this.avisar(evento);
-    }
-    
 }

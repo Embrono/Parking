@@ -6,6 +6,7 @@ package Excepciones;
 
 import java.util.Date;
 import parkingsystem.Entidad.Estadia;
+import parkingsystem.Entidad.Vehiculo;
 import parkingsystem.Fachada;
 
 /**
@@ -14,8 +15,14 @@ import parkingsystem.Fachada;
  */
 public class AnomaliaTransportador extends AnomaliaException {
     
+    private Vehiculo vehiculo;
     public AnomaliaTransportador(Estadia estadia, Date fecha) {
         super(estadia, fecha);
+    }
+    public AnomaliaTransportador(Estadia estadia, Vehiculo v, Date fecha) {
+        super(estadia, fecha);
+        this.vehiculo = v;
+
     }
     
     @Override
@@ -25,7 +32,7 @@ public class AnomaliaTransportador extends AnomaliaException {
 
     @Override
     public void generarAnomalia() {
-        Fachada.getInstancia().registrarAnomaliaTransportador(this.getEstadia());
+        Fachada.getInstancia().registrarAnomaliaTransportador(this.getEstadia(), this.vehiculo);
     }
     
 }

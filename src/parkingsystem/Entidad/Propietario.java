@@ -12,6 +12,11 @@ import java.util.ArrayList;
  */
 public class Propietario {
 
+    @Override
+    public String toString() {
+        return nombreCompleto;
+    }
+
     public Propietario(String documento, String nombreCompleto) {
         this.documento = documento;
         this.nombreCompleto = nombreCompleto;

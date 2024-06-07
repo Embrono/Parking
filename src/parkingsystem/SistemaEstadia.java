@@ -55,9 +55,9 @@ public class SistemaEstadia {
         try {
             Estadia estadiaAnterior = c.buscarUltimaEstadia();
             if (estadiaAnterior != null && c.isOcupada()) {
-                throw new AnomaliaHoudini(estadiaAnterior, new Date());
+                throw new Excepciones.AnomaliaHoudini(estadiaAnterior, new Date());
             }
-            
+
             // Crear una nueva estadía
             Estadia nuevaEstadia = new Estadia(new Date(), c, v);
             nuevaEstadia.agregarMultas();
@@ -69,7 +69,7 @@ public class SistemaEstadia {
 
             // Actualizar el sistema de estadías
             estadias.add(nuevaEstadia);
-            
+
             // Actualizar el factor de demanda del parking
             Parking parking = c.getParking();
             parking.actualizarFactorDemanda(1);
@@ -81,20 +81,17 @@ public class SistemaEstadia {
     }
 
     public void egresarEstadia(Vehiculo v, Cochera c) {
-        v.setEstacionado(false);
-        c.setOcupada(false);
-
+        
+        Estadia estadia = c.buscarEstadiaActiva(v.getPatente());
         try {
-            Estadia estadia = c.buscarEstadiaActiva(v.getPatente());
-            
-            if (estadia == null) {
-                throw new AnomaliaTransportador(estadia, new Date());
-            }
 
             if (!c.isOcupada()) {
                 throw new AnomaliaMistery(estadia, new Date());
             }
             
+            if (!estadia.getVehiculo().equals(v)) {
+                throw new AnomaliaTransportador(estadia, v, new Date());
+            }
             // Finalizar la estadía
             finalizarEstadia(estadia);
 
@@ -103,9 +100,9 @@ public class SistemaEstadia {
             double montoEstadia = estadia.getFacturado();
             propietario.descontarSaldo(montoEstadia);
             c.setOcupada(false);
+            v.setEstacionado(false);
             Fachada.getInstancia().avisar(eventos.EGRESO);
             c.getParking().avisar(eventos.EGRESO);
-
         } catch (AnomaliaException e) {
             e.generarAnomalia();
         }

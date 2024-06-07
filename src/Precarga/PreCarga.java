@@ -78,7 +78,7 @@ public class PreCarga {
     private ArrayList<Vehiculo> generarVehiculoPrecarga(Propietario propietario) {
         var cocheras = new ArrayList<Vehiculo>();
         var cantidad = new Random();
-        int aux = cantidad.nextInt(50, 101);
+        int aux = cantidad.nextInt(1, 7);
         for (int i = 0; i < aux; i++) {
             Vehiculo ve = new Vehiculo();
             ve.setEtiquetas(generarEtiquetas());

@@ -132,12 +132,13 @@ public class Cochera implements Estacionable {
     }
     
     public Estadia buscarEstadiaActiva(String patente) {
-        for (Estadia estadia : estadias) {
-            if (estadia.getFechaSalida() == null && estadia.getVehiculo().getPatente().equals(patente)) {
-                return estadia;
-            }
-        }
-        return null;
+        return estadias.get(estadias.size() -1);
+        //for (Estadia estadia : estadias) {
+        //    if (estadia.getFechaSalida() == null && estadia.getVehiculo().getPatente().equals(patente)) {
+        //        return estadia;
+        //    }
+        //}
+        //return null;
     }
     
 }

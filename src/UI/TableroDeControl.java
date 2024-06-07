@@ -10,6 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import observador.IObservador;
 import observador.Observable;
 import parkingsystem.Entidad.Anomalia;
+import parkingsystem.Entidad.Estadia;
 import parkingsystem.Entidad.Parking;
 import parkingsystem.Entidad.eventos;
 import parkingsystem.Fachada;
@@ -19,16 +20,17 @@ import parkingsystem.SistemaParking;
  *
  * @author Embrono
  */
-public class TableroDeControl extends javax.swing.JFrame implements IObservador{
+public class TableroDeControl extends javax.swing.JFrame implements IObservador {
 
     /**
      * Creates new form TableroDeControl
      */
     private ArrayList<Parking> parkings = Fachada.getInstancia().getParkings();
+
     public TableroDeControl() {
         initComponents();
         Fachada.getInstancia().agregarObservador(this);
-        DibujarGridParking();   
+        DibujarGridParking();
         TotalEstadiasLabel();
     }
 
@@ -213,28 +215,28 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador{
     private void jButtonPreciosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonPreciosMouseClicked
         // TODO add your handling code here:
         int selection = jTableDashBoard.getSelectedRow();
-        if(selection == -1){
+        if (selection == -1) {
             JOptionPane.showMessageDialog(this, "No hay seleccion", "Lista de Precio", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        new ListaDePrecio(this, false,this.parkings.get(selection)).setVisible(true);
+        new ListaDePrecio(this, false, this.parkings.get(selection)).setVisible(true);
     }//GEN-LAST:event_jButtonPreciosMouseClicked
 
     private void jButtonCarteleraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCarteleraMouseClicked
         // TODO add your handling code here:
         int selection = jTableDashBoard.getSelectedRow();
-        if(selection == -1){
+        if (selection == -1) {
             JOptionPane.showMessageDialog(this, "No hay seleccion", "Lista de Precio", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        new CarteleraElectronica(this, false,this.parkings.get(selection)).setVisible(true);
+        new CarteleraElectronica(this, false, this.parkings.get(selection)).setVisible(true);
     }//GEN-LAST:event_jButtonCarteleraMouseClicked
 
     private void jButtonCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCerrarMouseClicked
         // TODO add your handling code here:
         Fachada.getInstancia().quitarObservador(this);
         this.dispose();
-        
+
     }//GEN-LAST:event_jButtonCerrarMouseClicked
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -267,23 +269,23 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador{
 
     @Override
     public void actualizar(Object evento, Observable origen) {
-        if(evento.equals(eventos.INGRESO)){
+        if (evento.equals(eventos.INGRESO)) {
             DibujarGridParking();
             TotalEstadiasLabel();
-        }else if(evento.equals(eventos.EGRESO)){
+        } else if (evento.equals(eventos.EGRESO)) {
             DibujarGridParking();
             TotalEstadiasLabel();
-        }else if(evento.equals(eventos.ANOMALIAS) && jCheckBoxMonitor.isSelected()){
+        } else if (evento.equals(eventos.ANOMALIAS) && jCheckBoxMonitor.isSelected()) {
             DibujarGridAnomalia();
         }
     }
-    
-    public void DibujarGridParking(){
-         ArrayList<Parking> listaParkings = Fachada.getInstancia().getParkings();
-        
+
+    public void DibujarGridParking() {
+        ArrayList<Parking> listaParkings = Fachada.getInstancia().getParkings();
+
         // Crear el modelo de la tabla
         DefaultTableModel model = new DefaultTableModel();
-        
+
         // Añadir columnas
         model.addColumn("Parking");
         model.addColumn("# Ocupadas");
@@ -293,12 +295,12 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador{
         model.addColumn("# Estadias");
         model.addColumn("Multas");
         model.addColumn("SubTotal");
-        
+
         // Establecer el número de filas
         model.setRowCount(listaParkings.size());
-        
+
         int fila = 0;
-        
+
         // Rellenar las filas con los datos de Parking
         for (Parking p : listaParkings) {
             model.setValueAt(p.getNombre(), fila, 0);
@@ -311,7 +313,7 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador{
             model.setValueAt(p.GetSubTotalParking(), fila, 7);
             fila++;
         }
-        
+
         // Establecer el modelo en la tabla
         jTableDashBoard.setModel(model);
     }
@@ -324,13 +326,25 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador{
         model.addColumn("Codigo Anomalia");
         model.addColumn("Cochera");
         model.setRowCount(listaAnomalias.size());
-        
+
         int fila = 0;
-            for (Anomalia a : listaAnomalias) {
+        for (Anomalia a : listaAnomalias) {
             model.setValueAt(a.getFechaHoraDeteccion(), fila, 0);
-            model.setValueAt(a.getEstadia().getVehiculo().toString(), fila, 1);
+
+            String veTexto = "Sin coche";
+            final Estadia estadia = a.getEstadia();
+            if (estadia != null) {
+
+                var ve = estadia.getVehiculo();
+                if (ve != null) {
+                    veTexto = ve.getPropietario().toString();
+                }
+            }
+
+            model.setValueAt(veTexto, fila, 1);
             model.setValueAt(a.getCodigoError(), fila, 2);
-            model.setValueAt(a.getEstadia().getCochera().getId(), fila, 3);
+            model.setValueAt(estadia.getCochera().getId(), fila, 3);
+
             fila++;
         }
         jTableAnomalias.setModel(model);
