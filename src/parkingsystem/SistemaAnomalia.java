@@ -35,7 +35,6 @@ public class SistemaAnomalia {
     }
     
     public void registrarAnomaliaTransportador(Estadia estadia) {
-
         estadia.setMultas(new ArrayList<>());
         Anomalia anomaliaEstadia = new Anomalia(estadia, new Date(), "TRANSPORTADOR1");
         estadia.setAnomalia(anomaliaEstadia);
@@ -56,8 +55,13 @@ public class SistemaAnomalia {
         Fachada.getInstancia().avisar(eventos.ANOMALIAS);
     }
 
-    void registrarAnomaliaHudini(Estadia estadia) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void registrarAnomaliaHudini(Estadia estadia) {
+        estadia.setMultas(new ArrayList<>());
+        estadia.setFacturado(0);
+        Anomalia anomalia = new Anomalia(estadia, new Date(), "HOUDINI");
+        estadia.setAnomalia(anomalia);
+        this.anomalias.add(anomalia);
+        Fachada.getInstancia().avisar(eventos.ANOMALIAS);
     }
     
 }

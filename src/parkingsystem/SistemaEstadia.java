@@ -52,38 +52,32 @@ public class SistemaEstadia {
     }
 
     public void agregarEstadia(Vehiculo v, Cochera c) {
-        v.setEstacionado(true);
-        c.setOcupada(true);
-
-        Date fecha = new Date();
-        Estadia estadiaAnterior;
-
-        if (c.isOcupada()) {
-            estadiaAnterior = c.buscarUltimaEstadia();
-            if (estadiaAnterior != null) {
-                estadiaAnterior.setFechaSalida(null);
-                estadiaAnterior.setFacturado(0);
-                Anomalia nuevaAnomalia = new Anomalia(estadiaAnterior, fecha, "HOUDINI");
-                estadiaAnterior.setAnomalia(nuevaAnomalia);
+        try {
+            Estadia estadiaAnterior = c.buscarUltimaEstadia();
+            if (estadiaAnterior != null && c.isOcupada()) {
+                throw new AnomaliaHoudini(estadiaAnterior, new Date());
             }
+            
+            // Crear una nueva estadía
+            Estadia nuevaEstadia = new Estadia(new Date(), c, v);
+            nuevaEstadia.agregarMultas();
+
+            // Actualizar el estado de la cochera, vehiculo y agrega estadia
+            c.setOcupada(true);
+            v.setEstacionado(true);
+            c.getEstadias().add(nuevaEstadia);
+
+            // Actualizar el sistema de estadías
+            estadias.add(nuevaEstadia);
+            
+            // Actualizar el factor de demanda del parking
+            Parking parking = c.getParking();
+            parking.actualizarFactorDemanda(1);
+            Fachada.getInstancia().avisar(eventos.INGRESO);
+            c.getParking().avisar(eventos.INGRESO);
+        } catch (AnomaliaException e) {
+            e.generarAnomalia();
         }
-
-        // Crear una nueva estadía
-        Estadia nuevaEstadia = new Estadia(fecha, c, v);
-
-        // Actualizar el estado de la cochera
-        c.setOcupada(true);
-        c.getEstadias().add(nuevaEstadia);
-
-        // Actualizar el sistema de estadías
-        estadias.add(nuevaEstadia);
-
-        // Actualizar el factor de demanda del parking
-        Parking parking = c.getParking();
-        parking.actualizarFactorDemanda(1);
-        Fachada.getInstancia().avisar(eventos.INGRESO);
-        c.getParking().avisar(eventos.INGRESO);
-
     }
 
     public void egresarEstadia(Vehiculo v, Cochera c) {

@@ -6,6 +6,8 @@ package parkingsystem.Entidad;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
@@ -96,10 +98,32 @@ public class Estadia {
         }
         return total;
     }
-    public float getDuracion(){
-       return (fechaSalida.getTime() - fechaEntrada.getTime()) / 1000;
+    
+    public float getDuracion() {
+        if (fechaSalida != null && fechaEntrada != null) {
+            return (fechaSalida.getTime() - fechaEntrada.getTime()) / 1000;
+        } else {
+            return 0;
+        }
     }
+    
     public float getTotal(){
         return this.facturado + getTotalMulta();
+    }
+        
+    public void agregarMultas() {
+        //inicializo hash para almacenr cualquier clase que sea una subclase de etiqueta
+        Set<Class<? extends Etiqueta>> etiquetasVehiculo = new HashSet<>();
+    
+        for (Etiqueta vehiculoEtiqueta : vehiculo.getEtiquetas()) {
+            etiquetasVehiculo.add(vehiculoEtiqueta.getClass());
+        }
+    
+        for (Etiqueta cocheraEtiqueta : cochera.getEtiquetas()) {
+            if (!etiquetasVehiculo.contains(cocheraEtiqueta.getClass())) {
+                Multa multa = new Multa(this, cocheraEtiqueta, cocheraEtiqueta.montoASumarMulta(this.facturado, this.getDuracion()));
+                this.multas.add(multa);
+            }
+        }
     }
 }

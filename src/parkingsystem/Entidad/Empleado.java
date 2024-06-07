@@ -31,7 +31,7 @@ public class Empleado extends Etiqueta{
 
     @Override
     protected float montoASumarMulta(float precioEstadia, float duracion) {
-        return precioEstadia * 0.5f;
+        return duracion / 10;
     }
     
 }
