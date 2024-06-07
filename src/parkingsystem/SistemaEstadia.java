@@ -54,8 +54,6 @@ public class SistemaEstadia {
     public void agregarEstadia(Vehiculo v, Cochera c) {
         v.setEstacionado(true);
         c.setOcupada(true);
-        Fachada.getInstancia().avisar(eventos.INGRESO);
-        c.getParking().avisar(eventos.INGRESO);
 
         Date fecha = new Date();
         Estadia estadiaAnterior;
@@ -83,22 +81,26 @@ public class SistemaEstadia {
         // Actualizar el factor de demanda del parking
         Parking parking = c.getParking();
         parking.actualizarFactorDemanda(1);
+        Fachada.getInstancia().avisar(eventos.INGRESO);
+        c.getParking().avisar(eventos.INGRESO);
+
     }
 
     public void egresarEstadia(Vehiculo v, Cochera c) {
         v.setEstacionado(false);
         c.setOcupada(false);
-        Fachada.getInstancia().avisar(eventos.EGRESO);
-        c.getParking().avisar(eventos.EGRESO);
+
         try {
             Estadia estadia = c.buscarEstadiaActiva(v.getPatente());
+            
+            if (estadia == null) {
+                throw new AnomaliaTransportador(estadia, new Date());
+            }
 
             if (!c.isOcupada()) {
                 throw new AnomaliaMistery(estadia, new Date());
             }
-            if (estadia == null) {
-                throw new AnomaliaTransportador(estadia, new Date());
-            }
+            
             // Finalizar la estadía
             finalizarEstadia(estadia);
 
@@ -107,6 +109,8 @@ public class SistemaEstadia {
             double montoEstadia = estadia.getFacturado();
             propietario.descontarSaldo(montoEstadia);
             c.setOcupada(false);
+            Fachada.getInstancia().avisar(eventos.EGRESO);
+            c.getParking().avisar(eventos.EGRESO);
 
         } catch (AnomaliaException e) {
             e.generarAnomalia();

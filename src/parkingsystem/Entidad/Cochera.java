@@ -15,7 +15,12 @@ import simuladortransito.Estacionable;
  */
 public class Cochera implements Estacionable {
 
-    private final int id; 
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    }
+
+    private int id; 
     private static int ultimoId = 0;
     private Parking parking; 
     private ArrayList<Estadia> estadias;
