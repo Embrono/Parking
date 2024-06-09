@@ -61,6 +61,7 @@ public class SistemaEstadia {
             e.generarAnomalia();
         } finally {
             nuevaEstadia(v, c);
+            c.getParking().registrarEventoIngreso();
         }
     }
 
@@ -87,7 +88,7 @@ public class SistemaEstadia {
             Fachada.getInstancia().avisar(eventos.PAGO_REALIZADA);
             c.getParking().avisar(eventos.EGRESO);
             Fachada.getInstancia().avisar(eventos.EGRESO);
-
+            c.getParking().registrarEventoEgreso();
         }
     }
 
@@ -104,7 +105,7 @@ public class SistemaEstadia {
         Parking parking = e.getCochera().getParking();
         e.getCochera().setOcupada(false);
         e.getVehiculo().setEstacionado(false);
-        parking.actualizarFactorDemanda(-1);
+        
     }
 
     void egresarEstadia(Transitable transitable, Estacionable estacionable) {
@@ -134,7 +135,6 @@ public class SistemaEstadia {
 
         // Actualizar el factor de demanda del parking
         Parking parking = c.getParking();
-        parking.actualizarFactorDemanda(1);
         Fachada.getInstancia().avisar(eventos.INGRESO);
         c.getParking().avisar(eventos.INGRESO);
     }

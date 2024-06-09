@@ -272,6 +272,7 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador 
         if (evento.equals(eventos.INGRESO)) {
             DibujarGridParking();
             TotalEstadiasLabel();
+            TotalFacturado();
         } else if (evento.equals(eventos.EGRESO)) {
             DibujarGridParking();
             TotalEstadiasLabel();

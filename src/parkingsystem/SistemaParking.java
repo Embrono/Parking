@@ -22,7 +22,7 @@ import simuladortransito.Transitable;
  */
 public class SistemaParking {
     private static SistemaParking instancia;
-
+    
     // Private constructor to prevent instantiation
     private SistemaParking() {
         vehiculos = new ArrayList<>();

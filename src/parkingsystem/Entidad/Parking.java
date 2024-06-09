@@ -23,8 +23,10 @@ public class Parking extends Observable {
     private ArrayList<Tarifa> Tarifas;
     private float factorDemanda;
     private long ultimaActualizacion;
-    private float estadoTendencia;
+    private String estadoTendencia;
+    private int UT;
     private ArrayList<Estadia> estadias = new ArrayList<>();
+    private ArrayList<Evento> eventos = new ArrayList<>();
 
     public Parking(String nombre, String direccion) {
         this.nombre = nombre;
@@ -32,6 +34,8 @@ public class Parking extends Observable {
         Tarifas = new ArrayList<>();
         Cocheras = new ArrayList<>();
         this.factorDemanda = 1.0f;
+        this.UT = 1;
+        this.estadoTendencia = "Estable";
         this.ultimaActualizacion = System.currentTimeMillis() / 1000;
     }
 
@@ -65,6 +69,7 @@ public class Parking extends Observable {
     }
 
     public float getFactorDemanda() {
+        actualizarFactorDemanda();
         return factorDemanda;
     }
 
@@ -81,20 +86,22 @@ public class Parking extends Observable {
     }
 
     // Actualizar factor de demanda
-    public void actualizarFactorDemanda(int diferenciaIngresosEgresos) {
+    public void actualizarFactorDemanda() {
         long tiempoActual = System.currentTimeMillis() / 1000;  // Tiempo actual en UT
-        long tiempoTranscurrido = tiempoActual - this.ultimaActualizacion;
+        long tiempoTranscurrido = tiempoActual - this.ultimaActualizacion * this.UT;
 
         if (tiempoTranscurrido < 10) {
             return;
         }
 
         int capacidad = Cocheras.size();
-        float ocupacion = (float) getOcupacion() / capacidad;
-
+        float ocupacion = getOcupacion() / capacidad;
+        int diferenciaIngresosEgresos = calcularDiferenciaUltimosUT();
         if (Math.abs(diferenciaIngresosEgresos) <= 0.1 * capacidad) {
             this.factorDemanda = Math.max(0.25f, this.factorDemanda - 0.01f * tiempoTranscurrido);
+            this.estadoTendencia = "Estable";
         } else if (diferenciaIngresosEgresos > 0.1 * capacidad) {
+            this.estadoTendencia = "Positiva";
             if (ocupacion < 0.33) {
                 this.factorDemanda = Math.min(10.0f, this.factorDemanda + 0.05f * tiempoTranscurrido);
             } else if (ocupacion < 0.66) {
@@ -103,6 +110,7 @@ public class Parking extends Observable {
                 this.factorDemanda = Math.min(10.0f, this.factorDemanda + 0.15f * tiempoTranscurrido);
             }
         } else {
+            this.estadoTendencia = "Negativa";
             if (this.factorDemanda > 1.0f) {
                 this.factorDemanda = 1.0f;
             } else {
@@ -117,8 +125,8 @@ public class Parking extends Observable {
         return estadias;
     }
 
-    public int getOcupacion() {
-        int ocupadas = 0;
+    public float getOcupacion() {
+        float ocupadas = 0;
         for (Cochera cochera : Cocheras) {
             if (cochera.isOcupada()) {
                 ocupadas++;
@@ -138,10 +146,7 @@ public class Parking extends Observable {
     }
 
     public String getEstadoTendencia() {
-        if (factorDemanda > 1) {
-            return "Tendencia negativa";
-        }
-        return 1 + "";
+        return this.estadoTendencia;
     }
 
     public int getCantidadEstadias() {
@@ -174,4 +179,49 @@ public class Parking extends Observable {
         return null;
     }
 
+    public static class Evento {
+
+        public Evento(long tiempo, boolean esIngreso) {
+            this.tiempo = tiempo;
+            this.esIngreso = esIngreso;
+        }
+        long tiempo;
+        boolean esIngreso;
+
+    }
+
+    private int calcularDiferenciaUltimosUT() {
+        long tiempoActual = System.currentTimeMillis() / 1000;
+        long tiempoLimite = tiempoActual - (10 * UT);
+
+        int ingresos = 0;
+        int egresos = 0;
+
+        ArrayList<Evento> eventosFiltrados = new ArrayList<>();
+
+        for (Evento evento : eventos) {
+            if (evento.tiempo >= tiempoLimite) {
+                eventosFiltrados.add(evento);
+                if (evento.esIngreso) {
+                    ingresos++;
+                } else {
+                    egresos++;
+                }
+            }
+        }
+
+        // Reemplazar la lista original con la lista filtrada
+        eventos = eventosFiltrados;
+        return ingresos - egresos;
+    }
+
+    public void registrarEventoIngreso() {
+        long tiempo = System.currentTimeMillis() / 1000;
+        eventos.add(new Evento(tiempo, true));
+    }
+
+    public void registrarEventoEgreso() {
+        long tiempo = System.currentTimeMillis() / 1000;
+        eventos.add(new Evento(tiempo, false));
+    }
 }
