@@ -22,7 +22,7 @@ public class Tarifa {
         parking = p;
     }
 
-    public double getPrecio() {
+    public float getPrecio() {
         return precio;
     }
 

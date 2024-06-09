@@ -24,22 +24,22 @@ import simuladortransito.Transitable;
  *
  * @author facun
  */
-public class Fachada extends Observable implements Sensor{
+public class Fachada extends Observable implements Sensor {
+
     private SistemaEstadia sistemaEstadia = SistemaEstadia.getInstancia();
-    private SistemaParking sistemaParking = SistemaParking.getInstancia();  
+    private SistemaParking sistemaParking = SistemaParking.getInstancia();
     private SistemaEtiquetas sistemaEtiquetas = SistemaEtiquetas.getInstancia();
     private SistemaAnomalia sistemaAnomalia = SistemaAnomalia.getInstancia();
     private SistemaTarifa sistemaTarifa = SistemaTarifa.getInstancia();
 
-
-        
     private static Fachada instancia = new Fachada();
 
     public static Fachada getInstancia() {
         return instancia;
     }
-    
-    private Fachada() {}
+
+    private Fachada() {
+    }
 
     @Override
     public void ingreso(Transitable transitable, Estacionable estacionable) {
@@ -49,9 +49,9 @@ public class Fachada extends Observable implements Sensor{
     @Override
     public void egreso(Transitable transitable, Estacionable estacionable) {
         sistemaEstadia.egresarEstadia(transitable, estacionable);
-    } 
-    
-    public ArrayList<Parking> getParkings(){
+    }
+
+    public ArrayList<Parking> getParkings() {
         return sistemaParking.getParkings();
     }
 
@@ -59,8 +59,8 @@ public class Fachada extends Observable implements Sensor{
         return parking.getEstadias().size();
     }
 
-    public void registrarAnomaliaMistery(Cochera cochera) {
-        sistemaAnomalia.registrarAnomaliaMistery(cochera);
+    public void registrarAnomaliaMistery(Estadia estadia, Vehiculo vehiculo) {
+        sistemaAnomalia.registrarAnomaliaMistery(estadia, vehiculo);
     }
 
     public void registrarAnomaliaTransportador(Estadia estadia, Vehiculo v) {
@@ -74,12 +74,12 @@ public class Fachada extends Observable implements Sensor{
     public void registrarAnomaliaHudini(Estadia estadia) {
         sistemaAnomalia.registrarAnomaliaHudini(estadia);
     }
-    
-    public void setPrecioTarifa(Tarifa t, float precio) throws TarifaExcepcion{
+
+    public void setPrecioTarifa(Tarifa t, float precio) throws TarifaExcepcion {
         sistemaTarifa.setPrecioTarifa(t, precio);
     }
-    
-    public ArrayList<Etiqueta> getEtiquetas(){
-       return sistemaEtiquetas.getEtiquetas();
-    } 
+
+    public ArrayList<Etiqueta> getEtiquetas() {
+        return sistemaEtiquetas.getEtiquetas();
+    }
 }

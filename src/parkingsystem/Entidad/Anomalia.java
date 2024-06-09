@@ -14,11 +14,14 @@ public class Anomalia {
     private Estadia estadia;
     private Date fechaHoraDeteccion;
     private String codigoError;
-    
+    private float multiplicador = 1;
     public Anomalia(Estadia estadia, Date fechaHoraDeteccion, String codigoError){
         this.estadia = estadia;
         this.fechaHoraDeteccion = fechaHoraDeteccion;
         this.codigoError = codigoError;
+        if("TRANSPORTADOR1" == codigoError ||"TRANSPORTADOR2" == codigoError){
+            this.multiplicador =0;
+        }
     }
     
     public Estadia getEstadia() {
@@ -29,6 +32,9 @@ public class Anomalia {
         this.estadia = estadia;
     }
 
+    public float getMultiplicador() {
+        return multiplicador;
+    }
     public Date getFechaHoraDeteccion() {
         return fechaHoraDeteccion;
     }
@@ -44,7 +50,6 @@ public class Anomalia {
     public void setCodigoError(String codigoError) {
         this.codigoError = codigoError;
     }
-
     @Override
     public String toString() {
         return "Nueva Anomalia: " + "estadia=" + estadia + ", fechaHoraDeteccion=" + fechaHoraDeteccion + ", codigoError='" + codigoError;

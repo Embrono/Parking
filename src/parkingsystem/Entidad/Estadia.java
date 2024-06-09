@@ -14,23 +14,26 @@ import java.util.Set;
  * @author Embrono
  */
 public class Estadia {
+
     private Date fechaEntrada;
-    private Date fechaSalida;  
+    private Date fechaSalida;
     private Cochera cochera;
     private Vehiculo vehiculo;
     private ArrayList<Multa> multas;
-    private float facturado;
     private Anomalia anomalia;
-    
+    private float tarifaUsada;
+    private float factorDemandaUSado;
+
     public Estadia(Date fechaEntrada, Cochera cochera, Vehiculo vehiculo) {
         this.fechaEntrada = fechaEntrada;
         this.cochera = cochera;
         this.vehiculo = vehiculo;
         this.multas = new ArrayList<Multa>();
-        this.facturado = 0;
+        this.tarifaUsada = cochera.getParking().getTarifaFor(vehiculo).getPrecio();
+        this.factorDemandaUSado = cochera.getParking().getFactorDemanda();
         cochera.getParking().getEstadias().add(this);
     }
-    
+
     public Date getFechaEntrada() {
         return fechaEntrada;
     }
@@ -46,7 +49,7 @@ public class Estadia {
     public void setFechaSalida(Date fechaSalida) {
         this.fechaSalida = fechaSalida;
     }
-    
+
     public Cochera getCochera() {
         return cochera;
     }
@@ -70,35 +73,35 @@ public class Estadia {
     public void setMultas(ArrayList<Multa> multas) {
         this.multas = multas;
     }
-    
-    public float getFacturado() {
-        return facturado;
+
+    public float getFacturadoConMulta() {
+        return getFacturadoSinMulta() + this.getTotalMulta();
     }
 
-    public void setFacturado(float facturado) {
-        this.facturado = facturado;
+    public float getFacturadoSinMulta() {
+        return this.tarifaUsada * this.getDuracion() * this.factorDemandaUSado;
     }
-    
+
     public Anomalia getAnomalia() {
         return anomalia;
     }
 
     public void setAnomalia(Anomalia anomalia) {
         this.anomalia = anomalia;
-    }   
-    
-    public Parking getParking(){
+    }
+
+    public Parking getParking() {
         return this.cochera.getParking();
     }
-    
-    public float getTotalMulta(){
+
+    public float getTotalMulta() {
         float total = 0;
-        for(Multa m: multas){
-            total+= m.getMontoTotalMulta();
+        for (Multa m : multas) {
+            total += m.getMontoMulta();
         }
         return total;
     }
-    
+
     public float getDuracion() {
         if (fechaSalida != null && fechaEntrada != null) {
             return (fechaSalida.getTime() - fechaEntrada.getTime()) / 1000;
@@ -106,22 +109,20 @@ public class Estadia {
             return 0;
         }
     }
-    
-    public float getTotal(){
-        return this.facturado + getTotalMulta();
-    }
-        
-    public void agregarMultas() {
-        //inicializo hash para almacenr cualquier clase que sea una subclase de etiqueta
-        Set<Class<? extends Etiqueta>> etiquetasVehiculo = new HashSet<>();
-    
-        for (Etiqueta vehiculoEtiqueta : vehiculo.getEtiquetas()) {
-            etiquetasVehiculo.add(vehiculoEtiqueta.getClass());
+
+    public float getTotal() {
+        if (this.anomalia != null) {
+
+            return getFacturadoConMulta() * this.anomalia.getMultiplicador();
         }
-    
-        for (Etiqueta cocheraEtiqueta : cochera.getEtiquetas()) {
-            if (!etiquetasVehiculo.contains(cocheraEtiqueta.getClass())) {
-                Multa multa = new Multa(this, cocheraEtiqueta, cocheraEtiqueta.montoASumarMulta(this.facturado, this.getDuracion()));
+        return getFacturadoConMulta();
+
+    }
+
+    public void agregarMultas() {
+        for (Etiqueta ce : cochera.getEtiquetas()) {
+            if (!vehiculo.getEtiquetas().contains(ce)) {
+                Multa multa = new Multa(this, ce);
                 this.multas.add(multa);
             }
         }

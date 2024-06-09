@@ -16,9 +16,6 @@ import parkingsystem.Fachada;
 public class AnomaliaTransportador extends AnomaliaException {
     
     private Vehiculo vehiculo;
-    public AnomaliaTransportador(Estadia estadia, Date fecha) {
-        super(estadia, fecha);
-    }
     public AnomaliaTransportador(Estadia estadia, Vehiculo v, Date fecha) {
         super(estadia, fecha);
         this.vehiculo = v;

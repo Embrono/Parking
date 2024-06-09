@@ -34,7 +34,7 @@ public class Electrico extends Etiqueta{
     }
 
     @Override
-    protected float montoASumarMulta(float precioEstadia, float duracion) {
+    protected float CalcularMontoMulta(float precioEstadia, float duracion) {
         return precioEstadia * 0.5f;
     }
     

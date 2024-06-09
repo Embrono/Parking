@@ -43,11 +43,9 @@ public class SistemaAnomalia {
         var fecha = new Date();
         var es = new Estadia(fecha,estadia.getCochera(),v);
         es.setFechaSalida(fecha);
-        es.setFacturado(0);
         Anomalia anomaliaVehiculo = new Anomalia(es, new Date(), "TRANSPORTADOR2");
         es.setVehiculo(v);
         estadia.getVehiculo().setAnomalia(anomaliaVehiculo);
-        estadia.setFacturado(0);
         estadia.setFechaSalida(fecha);
 
         this.anomalias.add(anomaliaEstadia);
@@ -55,9 +53,11 @@ public class SistemaAnomalia {
         Fachada.getInstancia().avisar(eventos.ANOMALIAS);
     }
 
-    public void registrarAnomaliaMistery(Cochera cochera) {
-        Estadia nuevaEstadia = new Estadia(new Date(), cochera, null);
-        nuevaEstadia.setFechaSalida(new Date());
+    public void registrarAnomaliaMistery(Estadia estadia, Vehiculo vehiculo) {
+        var cochera = estadia.getCochera();
+        var fechaActual = new Date();
+        Estadia nuevaEstadia = new Estadia(fechaActual , cochera, vehiculo);
+        nuevaEstadia.setFechaSalida(fechaActual);
         cochera.getEstadias().add(nuevaEstadia);
         Anomalia anomalia = new Anomalia(nuevaEstadia, new Date(), "MISTERY");
         nuevaEstadia.setAnomalia(anomalia);
@@ -67,7 +67,7 @@ public class SistemaAnomalia {
 
     public void registrarAnomaliaHudini(Estadia estadia) {
         estadia.setMultas(new ArrayList<>());
-        estadia.setFacturado(0);
+        estadia.getCochera().setOcupada(false);
         Anomalia anomalia = new Anomalia(estadia, new Date(), "HOUDINI");
         estadia.setAnomalia(anomalia);
         this.anomalias.add(anomalia);

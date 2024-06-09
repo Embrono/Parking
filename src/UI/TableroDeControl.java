@@ -275,8 +275,11 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador 
         } else if (evento.equals(eventos.EGRESO)) {
             DibujarGridParking();
             TotalEstadiasLabel();
+            TotalFacturado();
         } else if (evento.equals(eventos.ANOMALIAS) && jCheckBoxMonitor.isSelected()) {
             DibujarGridAnomalia();
+        }else if (evento.equals(eventos.PAGO_REALIZADA)){
+            TotalFacturado();
         }
     }
 
@@ -357,5 +360,14 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador 
             totalParking += p.getCantidadEstadias();
         }
         jLabelEstadiasValue.setText(totalParking + "");
+    }
+
+    private void TotalFacturado() {
+        ArrayList<Parking> listaParkings = Fachada.getInstancia().getParkings();
+        float totalParking = 0;
+        for (Parking p : listaParkings) {
+            totalParking += p.GetSubTotalParking();
+        }
+        jLabelFacturacionValue.setText(totalParking + "");
     }
 }

@@ -11,42 +11,17 @@ package parkingsystem.Entidad;
 public class Multa {
     private Estadia estadia;
     private Etiqueta etiqueta;
-    private float monto;
-    
-    public Multa(Estadia estadia, Etiqueta etiqueta, float monto) {
+    public Multa(Estadia estadia, Etiqueta etiqueta) {
         this.estadia = estadia;
         this.etiqueta = etiqueta;
-        this.monto = monto;
     }
-
     public Estadia getEstadia() {
         return estadia;
     }
-
-    public void setEstadia(Estadia estadia) {
-        this.estadia = estadia;
-    }
-
     public Etiqueta getEtiqueta() {
         return etiqueta;
     }
-
-    public void setEtiqueta(Etiqueta etiqueta) {
-        this.etiqueta = etiqueta;
-    }
-    
-    public float getMonto() {
-        return monto;
-    }
-
-    public void setMonto(float monto) {
-        this.monto = monto;
-    }
-    private float montoExtra(){
-        return etiqueta.montoASumarMulta(this.estadia.getFacturado(),this.estadia.getDuracion());
-    }
-    
-    public float getMontoTotalMulta(){
-        return montoExtra();
+    public float getMontoMulta(){
+        return etiqueta.CalcularMontoMulta(this.estadia.getFacturadoSinMulta(), this.estadia.getDuracion());
     }
 }
