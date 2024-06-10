@@ -4,6 +4,8 @@
  */
 package UI;
 
+import Controladores.ControladorTarifas;
+import Controladores.VistaTarifas;
 import Excepciones.TarifaExcepcion;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -21,21 +23,20 @@ import parkingsystem.Fachada;
  *
  * @author Embrono
  */
-public class ListaDePrecio extends javax.swing.JDialog implements IObservador {
+public class ListaDePrecio extends javax.swing.JDialog implements VistaTarifas  {
 
     /**
      * Creates new form ListaDePrecio
      */
-    private Parking parking;
+    private ControladorTarifas controlador;
+
 
     public ListaDePrecio(java.awt.Frame parent, boolean modal, Parking p) {
         super(parent, modal);
         //Fachada.getInstancia().agregarObservador(this);
-        parking = p;
-        p.agregarObservador(this);
+        controlador = new ControladorTarifas(this, p);
         initComponents();
-        this.setTitle(this.getTitle() + "-" + parking.getNombre());
-        DibujarTarifas();
+        this.setTitle(this.getTitle() + "-" + p.getNombre());
     }
 
     /**
@@ -133,14 +134,12 @@ public class ListaDePrecio extends javax.swing.JDialog implements IObservador {
     private void jButtonCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCerrarMouseClicked
         // TODO add your handling code here:
         //Fachada.getInstancia().quitarObservador(this);
-        parking.quitarObservador(this);
         this.dispose();
     }//GEN-LAST:event_jButtonCerrarMouseClicked
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
         //Fachada.getInstancia().quitarObservador(this);
-        parking.quitarObservador(this);
         this.dispose();
     }//GEN-LAST:event_formWindowClosing
 
@@ -150,7 +149,7 @@ public class ListaDePrecio extends javax.swing.JDialog implements IObservador {
         if (selection == -1) {
             return;
         }
-        var tarifa = this.parking.getTarifas().get(selection);
+        var tarifa = this.controlador.getTarifas().get(selection);
         jTextFieldNuevoValor.setText(String.valueOf(Math.round(tarifa.getPrecio() * 100.0) / 100.0));
     }//GEN-LAST:event_jTableListadoMouseClicked
 
@@ -160,7 +159,7 @@ public class ListaDePrecio extends javax.swing.JDialog implements IObservador {
         if (selection == -1) {
             return;
         }
-        var tarifa = this.parking.getTarifas().get(selection);
+        var tarifa = this.controlador.getTarifas().get(selection);
         float nuevoPrecio = 0;
         try {
             nuevoPrecio = Float.parseFloat(jTextFieldNuevoValor.getText());
@@ -169,7 +168,7 @@ public class ListaDePrecio extends javax.swing.JDialog implements IObservador {
             return;
         }
         try {
-            Fachada.getInstancia().setPrecioTarifa(tarifa, nuevoPrecio);
+            controlador.setPrecioTarifa(tarifa, nuevoPrecio);
         } catch (TarifaExcepcion ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error al cambiar precio", JOptionPane.ERROR_MESSAGE);
         }
@@ -188,15 +187,11 @@ public class ListaDePrecio extends javax.swing.JDialog implements IObservador {
     private javax.swing.JTextField jTextFieldNuevoValor;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void actualizar(Object evento, Observable origen) {
-        if (evento.equals(eventos.CAMBIO_DE_TARIFA) && origen.equals(parking)) {
-            DibujarTarifas();
-        }
-    }
+    
 
-    private void DibujarTarifas() {
-        ArrayList<Tarifa> tarifario = parking.getTarifas();
+    @Override
+    public void DibujarTarifas() {
+        ArrayList<Tarifa> tarifario = controlador.getTarifas();
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Tipo de Vehiculo");
         model.addColumn("Precio/<UT>");

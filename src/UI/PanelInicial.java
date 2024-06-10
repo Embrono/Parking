@@ -4,6 +4,7 @@
  */
 package UI;
 
+import parkingsystem.Fachada;
 import parkingsystem.SistemaParking;
 
 /**
@@ -73,7 +74,7 @@ public class PanelInicial extends javax.swing.JFrame {
 
     private void jMenuItemTableroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemTableroActionPerformed
         // TODO add your handling code here:
-        new TableroDeControl().setVisible(true);
+        new TableroDeControl(Fachada.getInstancia()).setVisible(true);
     }//GEN-LAST:event_jMenuItemTableroActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -4,6 +4,7 @@
  */
 package UI;
 
+import Controladores.ControladorTablero;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -15,23 +16,25 @@ import parkingsystem.Entidad.Parking;
 import parkingsystem.Entidad.eventos;
 import parkingsystem.Fachada;
 import parkingsystem.SistemaParking;
+import Controladores.VistaTablero;
 
 /**
  *
  * @author Embrono
  */
-public class TableroDeControl extends javax.swing.JFrame implements IObservador {
+public class TableroDeControl extends javax.swing.JFrame implements VistaTablero {
 
     /**
      * Creates new form TableroDeControl
      */
-    private ArrayList<Parking> parkings = Fachada.getInstancia().getParkings();
+    private ControladorTablero controlador;
 
-    public TableroDeControl() {
+    public TableroDeControl(Fachada fachada) {
         initComponents();
-        Fachada.getInstancia().agregarObservador(this);
         DibujarGridParking();
         TotalEstadiasLabel();
+        controlador = new ControladorTablero(this,fachada);
+
     }
 
     /**
@@ -219,7 +222,7 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador 
             JOptionPane.showMessageDialog(this, "No hay seleccion", "Lista de Precio", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        new ListaDePrecio(this, false, this.parkings.get(selection)).setVisible(true);
+        new ListaDePrecio(this, false, this.controlador.getParkings().get(selection)).setVisible(true);
     }//GEN-LAST:event_jButtonPreciosMouseClicked
 
     private void jButtonCarteleraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCarteleraMouseClicked
@@ -229,19 +232,17 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador 
             JOptionPane.showMessageDialog(this, "No hay seleccion", "Lista de Precio", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        new CarteleraElectronica(this, false, this.parkings.get(selection)).setVisible(true);
+        new CarteleraElectronica(this, false, this.controlador.getParkings().get(selection)).setVisible(true);
     }//GEN-LAST:event_jButtonCarteleraMouseClicked
 
     private void jButtonCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCerrarMouseClicked
         // TODO add your handling code here:
-        Fachada.getInstancia().quitarObservador(this);
         this.dispose();
 
     }//GEN-LAST:event_jButtonCerrarMouseClicked
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
-        Fachada.getInstancia().quitarObservador(this);
         this.dispose();
     }//GEN-LAST:event_formWindowClosing
 
@@ -268,24 +269,8 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador 
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void actualizar(Object evento, Observable origen) {
-        if (evento.equals(eventos.INGRESO)) {
-            DibujarGridParking();
-            TotalEstadiasLabel();
-            TotalFacturado();
-        } else if (evento.equals(eventos.EGRESO)) {
-            DibujarGridParking();
-            TotalEstadiasLabel();
-            TotalFacturado();
-        } else if (evento.equals(eventos.ANOMALIAS) && jCheckBoxMonitor.isSelected()) {
-            DibujarGridAnomalia();
-        }else if (evento.equals(eventos.PAGO_REALIZADA)){
-            TotalFacturado();
-        }
-    }
-
     public void DibujarGridParking() {
-        ArrayList<Parking> listaParkings = Fachada.getInstancia().getParkings();
+        ArrayList<Parking> listaParkings = this.controlador.getParkings();
 
         // Crear el modelo de la tabla
         DefaultTableModel model = new DefaultTableModel();
@@ -322,8 +307,9 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador 
         jTableDashBoard.setModel(model);
     }
 
-    private void DibujarGridAnomalia() {
-        ArrayList<Anomalia> listaAnomalias = Fachada.getInstancia().getAnomalias();
+    @Override
+    public void DibujarGridAnomalia() {
+        ArrayList<Anomalia> listaAnomalias = this.controlador.getAnomalias();
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Fecha/Hora");
         model.addColumn("Propietario");
@@ -354,8 +340,9 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador 
         jTableAnomalias.setModel(model);
     }
 
-    private void TotalEstadiasLabel() {
-        ArrayList<Parking> listaParkings = Fachada.getInstancia().getParkings();
+    @Override
+    public void TotalEstadiasLabel() {
+        ArrayList<Parking> listaParkings = this.controlador.getParkings();
         int totalParking = 0;
         for (Parking p : listaParkings) {
             totalParking += p.getCantidadEstadias();
@@ -363,12 +350,18 @@ public class TableroDeControl extends javax.swing.JFrame implements IObservador 
         jLabelEstadiasValue.setText(totalParking + "");
     }
 
-    private void TotalFacturado() {
-        ArrayList<Parking> listaParkings = Fachada.getInstancia().getParkings();
+    @Override
+    public void TotalFacturado() {
+        ArrayList<Parking> listaParkings = this.controlador.getParkings();
         float totalParking = 0;
         for (Parking p : listaParkings) {
             totalParking += p.GetSubTotalParking();
         }
         jLabelFacturacionValue.setText(totalParking + "");
+    }
+
+    @Override
+    public boolean GetMonitorea() {
+        return jCheckBoxMonitor.isSelected();
     }
 }

@@ -70,7 +70,7 @@ public class ParkingSystem {
         }
         final PanelInicial panelInicial = new PanelInicial();
         // se muestra el simulador de interfaz de usuario para visualizar los vehículos y los estacionables (cocheras)
-        new SimuladorIU(panelInicial, false,fachada,estacionables,transitables).setVisible(true);
+        new SimuladorIU(null, false,fachada,estacionables,transitables).setVisible(true);
         
         // se muestra la interfaz gráfica inicial del sistema de estacionamiento
         panelInicial.setVisible(true);
