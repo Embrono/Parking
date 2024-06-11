@@ -37,6 +37,7 @@ public class ListaDePrecio extends javax.swing.JDialog implements VistaTarifas  
         controlador = new ControladorTarifas(this, p);
         initComponents();
         this.setTitle(this.getTitle() + "-" + p.getNombre());
+        this.DibujarTarifas();
     }
 
     /**

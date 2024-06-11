@@ -6,10 +6,10 @@ package Controladores;
 
 /**
  *
- * @author Embrono
+ * @author alope
  */
-public interface VistaTarifas {
-
+public interface VistaCartelera {
     public void DibujarTarifas();
+    public void DibujarDisponibilidad();
 
 }

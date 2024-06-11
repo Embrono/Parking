@@ -4,6 +4,9 @@
  */
 package UI;
 
+import Controladores.ControladorCartelera;
+import Controladores.ControladorTarifas;
+import Controladores.VistaCartelera;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import observador.IObservador;
@@ -17,20 +20,19 @@ import parkingsystem.Fachada;
  *
  * @author Embrono
  */
-public class CarteleraElectronica extends javax.swing.JDialog implements IObservador {
+public class CarteleraElectronica extends javax.swing.JDialog implements VistaCartelera {
 
     /**
      * Creates new form CarteleraElectronica
      */
-    private Parking parking;
+    private ControladorCartelera controlador;
 
     public CarteleraElectronica(java.awt.Frame parent, boolean modal, Parking p) {
         super(parent, modal);
-        parking = p;
+        this.controlador = new ControladorCartelera(this, p);
         //Fachada.getInstancia().agregarObservador(this);
-        parking.agregarObservador(this);
         initComponents();
-        this.setTitle(this.getTitle() + "-" + parking.getNombre());
+        this.setTitle(this.getTitle() + "-" + p.getNombre());
         DibujarTarifas();
         DibujarDisponibilidad();
 
@@ -148,14 +150,12 @@ public class CarteleraElectronica extends javax.swing.JDialog implements IObserv
     private void jButtonCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCerrarMouseClicked
         // TODO add your handling code here:
         //Fachada.getInstancia().quitarObservador(this);
-        parking.quitarObservador(this);
         this.dispose();
     }//GEN-LAST:event_jButtonCerrarMouseClicked
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
         //Fachada.getInstancia().quitarObservador(this);
-        parking.quitarObservador(this);
         this.dispose();
     }//GEN-LAST:event_formWindowClosing
 
@@ -171,17 +171,8 @@ public class CarteleraElectronica extends javax.swing.JDialog implements IObserv
     private javax.swing.JTable jTableListado;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void actualizar(Object evento, Observable origen) {
-        if (evento.equals(eventos.CAMBIO_DE_TARIFA) && origen.equals(parking)) {
-            DibujarTarifas();
-        } else if ((evento.equals(eventos.EGRESO) || evento.equals(eventos.INGRESO)) && origen.equals(parking)) {
-            DibujarDisponibilidad();
-        }
-    }
-
-    private void DibujarTarifas() {
-        ArrayList<Tarifa> tarifario = parking.getTarifas();
+    public void DibujarTarifas() {
+        ArrayList<Tarifa> tarifario = controlador.getTarifas();
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Tipo de Vehiculo");
         model.addColumn("Precio/<UT>");
@@ -196,14 +187,15 @@ public class CarteleraElectronica extends javax.swing.JDialog implements IObserv
         jTableListado.setModel(model);
     }
 
-    private void DibujarDisponibilidad() {
+    @Override
+    public void DibujarDisponibilidad() {
         DibujarTablaDisponibilidad();
         MostrarDisponibilidad();
 
     }
 
     private void DibujarTablaDisponibilidad() {
-        var cocheras = parking.getCocheras();
+        var cocheras = this.controlador.getCocheras();
         var etiquetas = Fachada.getInstancia().getEtiquetas();
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Cocheras");
@@ -225,7 +217,7 @@ public class CarteleraElectronica extends javax.swing.JDialog implements IObserv
     }
 
     private void MostrarDisponibilidad() {
-        var cocherasDisponibles = parking.getCocheras().stream()
+        var cocherasDisponibles = controlador.getCocheras().stream()
                 .filter(c -> !c.isOcupada())
                 .count();
         jLabelDisponibilidadValue.setText(String.valueOf(cocherasDisponibles));

@@ -31,10 +31,9 @@ public class TableroDeControl extends javax.swing.JFrame implements VistaTablero
 
     public TableroDeControl(Fachada fachada) {
         initComponents();
+        controlador = new ControladorTablero(this,fachada);
         DibujarGridParking();
         TotalEstadiasLabel();
-        controlador = new ControladorTablero(this,fachada);
-
     }
 
     /**

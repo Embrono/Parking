@@ -14,6 +14,7 @@ import parkingsystem.Entidad.Etiqueta;
 import parkingsystem.Entidad.Parking;
 import parkingsystem.Entidad.Propietario;
 import parkingsystem.Entidad.Vehiculo;
+import parkingsystem.Entidad.eventos;
 import simuladorIU.SimuladorIU;
 import simuladortransito.ConfiguracionException;
 import simuladortransito.Estacionable;
@@ -74,8 +75,6 @@ public class ParkingSystem {
         
         // se muestra la interfaz gráfica inicial del sistema de estacionamiento
         panelInicial.setVisible(true);
-        
-
         
         // se agregan las cocheras y los parkings
         sistema.getCochera().addAll(p1.getCocheras());
